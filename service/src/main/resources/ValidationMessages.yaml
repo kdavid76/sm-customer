@@ -1,0 +1,16 @@
+errors:
+  user:
+    resource:
+      username:
+        required: Felhasználónév megadása kötelező
+      firstname:
+        required: Keresztnév megadása kötelező
+      lastname:
+        required: Utónév megadása kötelező
+      email:
+        required: E-mail cím megadása kötelező
+        format: E-mail cím formátuma nem megfelelő
+      roles:
+        required: Adott cégen belüli szerepkör megadása kötelező
+      password:
+        format: Jelszó formátuma nem megfelelő

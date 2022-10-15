@@ -1,0 +1,15 @@
+com:
+  bkk:
+    sm:
+      mongo:
+        customers:
+          database: customers
+          uri: mongodb+srv://${MONGO_CUSTOMER_USER}:${MONGO_CUSTOMER_PASSWORD}@taocluster.qa3sd.mongodb.net/users?retryWrites=true&w=majority
+          init:
+            enable: true
+            superuser:
+              username: ${CUSTOMER_SUPER_USER}
+              password: ${CUSTOMER_SUPER_USER_PASSWORD}
+              firstname: Mike
+              lastname: Hammer
+              email: mikehammer1902@gmail.com
