@@ -39,9 +39,11 @@ class UserResourceValidator: Validator {
         }
 
         // If password defined it must match the required format
-        val matcher = PASSWORD_PATTERN.matcher(user.password)
-        if(!matcher.matches()) {
-            errors.rejectValue("password", "errors.user.resource.password.format")
+        user.password?.let {
+            val matcher = PASSWORD_PATTERN.matcher(user.password)
+            if(!matcher.matches()) {
+                errors.rejectValue("password", "errors.user.resource.password.format")
+            }
         }
 
         // Email address must be in the right format
