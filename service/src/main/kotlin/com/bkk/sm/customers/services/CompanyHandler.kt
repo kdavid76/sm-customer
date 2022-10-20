@@ -67,12 +67,16 @@ class CompanyHandler(
 
         val saved = companyRepository.save(CompanyConverter.toCompany(companyWithAdminResource.companyResource))
         log.info { "Successfully saved company=$saved" }
-        var user: UserBase? = userRepository.findByUsername(companyWithAdminResource.userResource.username)
 
-         user = addRoleToUser(user, companyWithAdminResource.userResource)
-        return ServerResponse.ok().bodyValueAndAwait(CompanyWithAdminResource(
+        var user: UserBase? = null
+        companyWithAdminResource.userResource?.let {
+            user = userRepository.findByUsername(it.username)
+            user = addRoleToUser(user, it)
+        }
+
+    return ServerResponse.ok().bodyValueAndAwait(CompanyWithAdminResource(
             CompanyConverter.toCompanyResource(saved),
-            UserConverter.toUserResource(user)
+            if (user==null) null else UserConverter.toUserResource(user!!)
         ))
     }
 

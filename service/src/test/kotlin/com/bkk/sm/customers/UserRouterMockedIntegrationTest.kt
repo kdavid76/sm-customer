@@ -78,7 +78,7 @@ class UserRouterMockedIntegrationTest(
     }
 
     @Test
-    fun `Retrieve users with username`() {
+    fun `Retrieve users by username`() {
         coEvery {
             userRepository.findByUsername("davidk")
         } coAnswers {
@@ -134,6 +134,37 @@ class UserRouterMockedIntegrationTest(
             .header("API_VERSION", "V1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isBadRequest
+    }
+
+    @Test
+    fun `Add a new user with invalid request body`() {
+        val username = slot<String>()
+        coEvery {
+            userRepository.findByUsername(capture(username))
+        } answers {
+            null
+        }
+
+        val user = slot<UserBase>()
+        coEvery {
+            userRepository.save(capture(user))
+        } answers {
+            user.captured
+        }
+
+        val dkResource = TestUtils.createUserResource("123456789", " ", "wwww",
+            "Krisztian", "David", "myemail.com",
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")))
+
+        client
+            .post()
+            .uri("/users")
+            .header("API_VERSION", "V1")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(dkResource)
             .exchange()
             .expectStatus().isBadRequest
     }

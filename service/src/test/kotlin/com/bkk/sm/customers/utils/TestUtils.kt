@@ -1,10 +1,10 @@
 package com.bkk.sm.customers.utils
 
 import com.bkk.sm.mongo.customers.model.Address
+import com.bkk.sm.mongo.customers.model.company.Company
 import com.bkk.sm.mongo.customers.model.company.CompanyRole
 import com.bkk.sm.mongo.customers.model.user.UserBase
 import com.bkk.sm.mongo.customers.resources.CompanyResource
-import com.bkk.sm.mongo.customers.resources.CompanyWithAdminResource
 import com.bkk.sm.mongo.customers.resources.UserResource
 import java.time.LocalDateTime
 
@@ -61,9 +61,24 @@ class TestUtils {
                 lastModificationTime = lastModificationTime, enabled = enabled,
                 version = version, address = address)
 
-        fun createCompanyWithAdminResource(
-            companyResource: CompanyResource,
-            userResource: UserResource
-        ) = CompanyWithAdminResource(companyResource, userResource)
+        fun createCompany(
+            id: String?,
+            code: String,
+            name: String,
+            email: String,
+            taxId: String?,
+            bankAccountNumber: String?,
+            activationToken: String?,
+            activationTime: LocalDateTime?,
+            registrationTime: LocalDateTime?,
+            lastModificationTime: LocalDateTime?,
+            enabled: Boolean?,
+            version: Long,
+            address: Address
+        ) = Company(id=id, code=code, name=name, email=email, taxId=taxId,
+            bankAccountNumber = bankAccountNumber, activationToken = activationToken,
+            activationTime = activationTime, registrationTime = registrationTime,
+            lastModificationTime = lastModificationTime, enabled = enabled,
+            version = version, address = address)
     }
 }

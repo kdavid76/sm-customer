@@ -14,10 +14,12 @@ import com.bkk.sm.mongo.customers.model.company.CompanyRole
 import com.bkk.sm.mongo.customers.model.user.UserBase
 import com.bkk.sm.mongo.customers.repositories.CompanyRepository
 import com.bkk.sm.mongo.customers.repositories.UserRepository
+import com.bkk.sm.mongo.customers.resources.CompanyResource
 import com.bkk.sm.mongo.customers.resources.CompanyWithAdminResource
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
 import io.mockk.slot
+import kotlinx.coroutines.flow.flow
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -55,6 +57,10 @@ class CompanyRouterMockedIntegrationTest(
         "bkk@bkk.hu", null, null, "",
         LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true, 1,
         TestUtils.createAddress("3100", "salgótarján", "Utca. 1", null, null))
+    private val apple = TestUtils.createCompany(null, "apple", "Apple",
+        "info@apple.com", null, null, "",
+        LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true, 1,
+        TestUtils.createAddress("3100", "Salgótarján", "Utca. 1", null, null))
 
 
     @BeforeEach
@@ -62,6 +68,45 @@ class CompanyRouterMockedIntegrationTest(
         client = client.mutate()
             .responseTimeout(Duration.ofMinutes(10))
             .build()
+    }
+
+    @Test
+    fun `Retrieve all companies`() {
+        coEvery {
+            companyRepository.findAll()
+        } returns flow {
+            emit(apple)
+            emit(CompanyConverter.toCompany(bkk))
+        }
+
+        client
+            .get()
+            .uri("/companies")
+            .header("API_VERSION", "V1")
+            .exchange()
+            .expectStatus().isOk
+            .expectBodyList(CompanyResource::class.java)
+            .hasSize(2)
+            .contains(CompanyConverter.toCompanyResource(apple), bkk)
+    }
+
+    @Test
+    fun `Retrieve company by code`() {
+        coEvery {
+            companyRepository.findByCode("apple")
+        } coAnswers {
+            apple
+        }
+
+        client
+            .get()
+            .uri("/companies/apple")
+            .header("API_VERSION", "V1")
+            .exchange()
+            .expectStatus().isOk
+            .expectBodyList(CompanyResource::class.java)
+            .hasSize(1)
+            .contains(CompanyConverter.toCompanyResource(apple))
     }
 
     @Test
@@ -114,7 +159,7 @@ class CompanyRouterMockedIntegrationTest(
     }
 
     @Test
-    fun `Add company with valid user adn companyData`() {
+    fun `Add company with valid user and companyData`() {
         coEvery {
             companyRepository.findByCode(bkk.code)
         } answers {
@@ -161,17 +206,77 @@ class CompanyRouterMockedIntegrationTest(
                     Assertions.assertThat(companyWithAdminResource.companyResource.name).isEqualTo(bkk.name)
                     Assertions.assertThat(companyWithAdminResource.companyResource.email).isEqualTo(bkk.email)
                 }
-                if (companyWithAdminResource != null) {
+                if (companyWithAdminResource?.userResource != null) {
                     Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
-                    Assertions.assertThat(companyWithAdminResource.userResource.username).isEqualTo(davidk.username)
-                    Assertions.assertThat(companyWithAdminResource.userResource.email).isEqualTo(davidk.email)
-                    Assertions.assertThat(companyWithAdminResource.userResource.firstName).isEqualTo(davidk.firstName)
+                    Assertions.assertThat(companyWithAdminResource.userResource!!.username).isEqualTo(davidk.username)
+                    Assertions.assertThat(companyWithAdminResource.userResource!!.email).isEqualTo(davidk.email)
+                    Assertions.assertThat(companyWithAdminResource.userResource!!.firstName).isEqualTo(davidk.firstName)
+                }
+            }
+    }
+
+
+    @Test
+    fun `Add company with not pre-existing user`() {
+        coEvery {
+            companyRepository.findByCode(bkk.code)
+        } answers {
+            null
+        }
+
+        val username = slot<String>()
+        coEvery {
+            userRepository.findByUsername(capture(username))
+        } answers {
+            null
+        }
+
+        val user = slot<UserBase>()
+        coEvery {
+            userRepository.save(capture(user))
+        } answers {
+            user.captured
+        }
+
+        val company = slot<Company>()
+        coEvery {
+            companyRepository.save(capture(company))
+        } answers {
+            company.captured
+        }
+
+        client
+            .post()
+            .uri("/companies")
+            .header("API_VERSION", "V1")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(CompanyWithAdminResource(bkk, UserConverter.toUserResource(davidk)))
+            .exchange()
+            .expectStatus().isOk
+            .expectBody<CompanyWithAdminResource>()
+            .consumeWith {
+                val companyWithAdminResource = it.responseBody
+                Assertions.assertThat(companyWithAdminResource).isNotNull
+                if (companyWithAdminResource != null) {
+                    Assertions.assertThat(companyWithAdminResource.companyResource).isNotNull
+                    Assertions.assertThat(companyWithAdminResource.companyResource.code).isEqualTo(bkk.code)
+                    Assertions.assertThat(companyWithAdminResource.companyResource.name).isEqualTo(bkk.name)
+                    Assertions.assertThat(companyWithAdminResource.companyResource.email).isEqualTo(bkk.email)
+                }
+                if (companyWithAdminResource != null) {
+                    if (companyWithAdminResource.userResource != null) {
+                        Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
+                        Assertions.assertThat(companyWithAdminResource.userResource!!.username).isEqualTo(davidk.username)
+                        Assertions.assertThat(companyWithAdminResource.userResource!!.email).isEqualTo(davidk.email)
+                        Assertions.assertThat(companyWithAdminResource.userResource!!.firstName).isEqualTo(davidk.firstName)
+                    }
                 }
             }
     }
 
     @Test
-    fun `Check if role is added to existing user`() {
+    fun `Multiple company admin nominations for user`() {
         coEvery {
             companyRepository.findByCode(bkk.code)
         } answers {
@@ -212,12 +317,69 @@ class CompanyRouterMockedIntegrationTest(
             .consumeWith {
                 val companyWithAdminResource = it.responseBody
                 Assertions.assertThat(companyWithAdminResource).isNotNull
-                if (companyWithAdminResource != null) {
+
+                if (companyWithAdminResource?.userResource != null) {
                     Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
-                    Assertions.assertThat(companyWithAdminResource.userResource.roles).isNotNull
-                    companyWithAdminResource.userResource.roles?.let { it1 -> Assertions.assertThat(it1.size).isEqualTo(2) }
-                    Assertions.assertThat(companyWithAdminResource.userResource.roles).containsExactly(
+                    Assertions.assertThat(companyWithAdminResource.userResource!!.roles).isNotNull
+                    companyWithAdminResource.userResource!!.roles?.let { it1 -> Assertions.assertThat(it1.size).isEqualTo(2) }
+                    Assertions.assertThat(companyWithAdminResource.userResource!!.roles).containsExactly(
                         CompanyRole(Roles.ROLE_SUPERADMIN, "system"),
+                        CompanyRole(Roles.ROLE_ADMIN, "bkk")
+                    )
+                }
+            }
+    }
+
+    @Test
+    fun `Nominate user for company admin`() {
+        coEvery {
+            companyRepository.findByCode(bkk.code)
+        } answers {
+            null
+        }
+
+        val noRoleUser = bkkadmin
+        noRoleUser.roles = null
+        val username = slot<String>()
+        coEvery {
+            userRepository.findByUsername(capture(username))
+        } answers {
+            noRoleUser
+        }
+
+        val user = slot<UserBase>()
+        coEvery {
+            userRepository.save(capture(user))
+        } answers {
+            user.captured
+        }
+
+        val company = slot<Company>()
+        coEvery {
+            companyRepository.save(capture(company))
+        } answers {
+            company.captured
+        }
+
+        client
+            .post()
+            .uri("/companies")
+            .header("API_VERSION", "V1")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(CompanyWithAdminResource(bkk, UserConverter.toUserResource(davidk)))
+            .exchange()
+            .expectStatus().isOk
+            .expectBody<CompanyWithAdminResource>()
+            .consumeWith {
+                val companyWithAdminResource = it.responseBody
+                Assertions.assertThat(companyWithAdminResource).isNotNull
+
+                if (companyWithAdminResource?.userResource != null) {
+                    Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
+                    Assertions.assertThat(companyWithAdminResource.userResource!!.roles).isNotNull
+                    companyWithAdminResource.userResource!!.roles?.let { it1 -> Assertions.assertThat(it1.size).isEqualTo(1) }
+                    Assertions.assertThat(companyWithAdminResource.userResource!!.roles).containsExactly(
                         CompanyRole(Roles.ROLE_ADMIN, "bkk")
                     )
                 }
