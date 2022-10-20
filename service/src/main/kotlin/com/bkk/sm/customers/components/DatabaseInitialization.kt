@@ -1,8 +1,8 @@
 package com.bkk.sm.customers.components
 
-import com.bkk.sm.mongo.customers.model.CompanyRole
 import com.bkk.sm.mongo.customers.model.Roles
-import com.bkk.sm.mongo.customers.model.UserBase
+import com.bkk.sm.mongo.customers.model.company.CompanyRole
+import com.bkk.sm.mongo.customers.model.user.UserBase
 import com.bkk.sm.mongo.customers.repositories.UserRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

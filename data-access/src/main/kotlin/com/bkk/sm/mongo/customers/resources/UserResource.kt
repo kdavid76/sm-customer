@@ -1,8 +1,7 @@
 package com.bkk.sm.mongo.customers.resources
 
-import com.bkk.sm.mongo.customers.model.CompanyRole
+import com.bkk.sm.mongo.customers.model.company.CompanyRole
 import java.util.*
-import kotlin.collections.ArrayList
 
 data class UserResource(
     var id: String? = null,

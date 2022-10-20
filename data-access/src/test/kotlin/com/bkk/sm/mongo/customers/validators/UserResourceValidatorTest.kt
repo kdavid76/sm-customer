@@ -1,7 +1,7 @@
 package com.bkk.sm.mongo.customers.validators
 
-import com.bkk.sm.mongo.customers.model.CompanyRole
 import com.bkk.sm.mongo.customers.model.Roles
+import com.bkk.sm.mongo.customers.model.company.CompanyRole
 import com.bkk.sm.mongo.customers.resources.UserResource
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
