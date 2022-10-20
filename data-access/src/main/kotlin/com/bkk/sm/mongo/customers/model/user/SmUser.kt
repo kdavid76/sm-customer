@@ -1,4 +1,4 @@
-package com.bkk.sm.mongo.customers.model
+package com.bkk.sm.mongo.customers.model.user
 
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails

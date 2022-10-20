@@ -1,5 +1,6 @@
-package com.bkk.sm.mongo.customers.model
+package com.bkk.sm.mongo.customers.model.user
 
+import com.bkk.sm.mongo.customers.model.company.CompanyRole
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.mongodb.lang.NonNull
 
@@ -60,5 +61,12 @@ data class UserBase (
         list.addAll(roles?.asSequence()?.map { it.role }?.distinct()?.map { GrantedAuthority { it.name } }?.toList() ?: mutableListOf())
         return list
     }
+
+    override fun toString(): String = "UserBase[id=${id?:""}, username=$username, firstName=$firstName," +
+            " middleName=${middleName?:""}, lastName=$lastName, email=$email, failedLoginAttempts=${failedLoginAttempts?:""}," +
+            " accountLocked=${accountLocked}, passwordExpiringEnabled=${passwordExpiringEnabled}," +
+            " enabled=$enabled, registrationTime=${registrationTime?:""}, activatedTime=${activatedTime?:""}," +
+            " lastModificationTime=${lastModificationTime?:""}, passwordExpiryTime=${passwordExpiryTime?:""}," +
+            " accountExpiryTime=${accountExpiryTime?:""}, activationKey=${activationKey?:""}, version=$version]"
 
 }

@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.server.SecurityWebFilterChain
-import java.security.SecureRandom
 
 @Configuration
 @EnableWebFluxSecurity
@@ -26,6 +25,8 @@ class SecurityConfig {
                     .permitAll()
                 .pathMatchers("/users/**")
                     .permitAll()
+            .pathMatchers("/companies/**")
+            .permitAll()
                 .and()
             .build()
     }
