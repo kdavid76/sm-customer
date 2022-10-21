@@ -29,12 +29,11 @@ class UserResourceValidatorTest {
 
         validator.validate(userResource, errors)
 
-        Assertions.assertThat(errors.errorCount).isEqualTo(6)
+        Assertions.assertThat(errors.errorCount).isEqualTo(5)
         Assertions.assertThat(errors.getFieldError("email")).isNotNull
         Assertions.assertThat(errors.getFieldError("firstName")).isNotNull
         Assertions.assertThat(errors.getFieldError("username")).isNotNull
         Assertions.assertThat(errors.getFieldError("lastName")).isNotNull
-        Assertions.assertThat(errors.getFieldError("roles")).isNotNull
     }
 
     @Test
@@ -47,10 +46,9 @@ class UserResourceValidatorTest {
 
         validator.validate(userResource, errors)
 
-        Assertions.assertThat(errors.errorCount).isEqualTo(3)
+        Assertions.assertThat(errors.errorCount).isEqualTo(2)
         Assertions.assertThat(errors.getFieldError("email")).isNotNull
         Assertions.assertThat(errors.getFieldError("password")).isNotNull
-        Assertions.assertThat(errors.getFieldError("roles")).isNotNull
     }
 
     @Test

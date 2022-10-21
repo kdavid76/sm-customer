@@ -8,13 +8,12 @@
 		<module>data-access</module>
 	</modules>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.4</version>
+		<groupId>com.sportmanagement.bkk</groupId>
+		<artifactId>sm-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.sportmanagement.bkk</groupId>
 	<artifactId>sm-customer-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sm-customer-parent</name>
@@ -22,36 +21,10 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<java.version>17</java.version>
-		<kotlin.version>1.7.20</kotlin.version>
-		<kotlin-logging.version>3.0.0</kotlin-logging.version>
-		<mockk.version>1.13.2</mockk.version>
-		<springmockk.version>3.1.1</springmockk.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>io.github.microutils</groupId>
-				<artifactId>kotlin-logging-jvm</artifactId>
-				<version>${kotlin-logging.version}</version>
-			</dependency>
-
-			<!-- T E S T  -->
-			<dependency>
-				<groupId>io.mockk</groupId>
-				<artifactId>mockk-jvm</artifactId>
-				<version>${mockk.version}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>com.ninja-squad</groupId>
-				<artifactId>springmockk</artifactId>
-				<version>${springmockk.version}</version>
-				<scope>test</scope>
-			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 </project>
