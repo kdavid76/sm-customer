@@ -18,6 +18,7 @@ import com.bkk.sm.mongo.customers.resources.CompanyResource
 import com.bkk.sm.mongo.customers.resources.CompanyWithAdminResource
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.slot
 import kotlinx.coroutines.flow.flow
 import org.assertj.core.api.Assertions
@@ -382,6 +383,47 @@ class CompanyRouterMockedIntegrationTest(
                     Assertions.assertThat(companyWithAdminResource.userResource!!.roles).containsExactly(
                         CompanyRole(Roles.ROLE_ADMIN, "bkk")
                     )
+                }
+            }
+    }
+
+    @Test
+    fun `Add company without admin user`() {
+        coEvery {
+            companyRepository.findByCode(bkk.code)
+        } answers {
+            null
+        }
+
+        val company = slot<Company>()
+        coEvery {
+            companyRepository.save(capture(company))
+        } answers {
+            company.captured
+        }
+
+        client
+            .post()
+            .uri("/companies")
+            .header("API_VERSION", "V1")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(CompanyWithAdminResource(bkk, null))
+            .exchange()
+            .expectStatus().isOk
+            .expectBody<CompanyWithAdminResource>()
+            .consumeWith {
+                val companyWithAdminResource = it.responseBody
+                Assertions.assertThat(companyWithAdminResource).isNotNull
+                if (companyWithAdminResource != null) {
+                    Assertions.assertThat(companyWithAdminResource.companyResource).isNotNull
+                    Assertions.assertThat(companyWithAdminResource.userResource).isNull()
+                    Assertions.assertThat(companyWithAdminResource.companyResource.code).isEqualTo(bkk.code)
+                    Assertions.assertThat(companyWithAdminResource.companyResource.name).isEqualTo(bkk.name)
+                    Assertions.assertThat(companyWithAdminResource.companyResource.email).isEqualTo(bkk.email)
+                    coVerify(exactly = 0) {
+                        userRepository.findByUsername(any())
+                    }
                 }
             }
     }

@@ -2,11 +2,12 @@ package com.bkk.sm.customers.services
 
 import com.bkk.sm.mongo.customers.converters.CompanyConverter
 import com.bkk.sm.mongo.customers.converters.UserConverter
+import com.bkk.sm.mongo.customers.model.Roles
+import com.bkk.sm.mongo.customers.model.company.CompanyRole
 import com.bkk.sm.mongo.customers.model.user.UserBase
 import com.bkk.sm.mongo.customers.repositories.CompanyRepository
 import com.bkk.sm.mongo.customers.repositories.UserRepository
 import com.bkk.sm.mongo.customers.resources.CompanyWithAdminResource
-import com.bkk.sm.mongo.customers.resources.UserResource
 import com.bkk.sm.mongo.customers.validators.CompanyWithAdminResourceValidator
 import kotlinx.coroutines.flow.map
 import mu.KotlinLogging
@@ -70,8 +71,8 @@ class CompanyHandler(
 
         var user: UserBase? = null
         companyWithAdminResource.userResource?.let {
-            user = userRepository.findByUsername(it.username)
-            user = addRoleToUser(user, it)
+            user = userRepository.findByUsername(it.username) ?: UserConverter.toUserBase(it)
+            user = addRoleToUser(user!!, CompanyRole(Roles.ROLE_ADMIN, saved.code))
         }
 
     return ServerResponse.ok().bodyValueAndAwait(CompanyWithAdminResource(
@@ -90,20 +91,10 @@ class CompanyHandler(
         }
     }
 
-    private suspend fun addRoleToUser(userBase: UserBase?, userResource: UserResource): UserBase {
-        var user = userBase
-        val rolesInResource = userResource.roles
-        user?.let {
-            it.roles?.let { outer ->
-                rolesInResource?.forEach{ inner ->
-                    outer.add(inner)
-                }
-            } ?: run {
-                it.roles = rolesInResource
-            }
-        } ?: run {
-            user = UserConverter.toUserBase(userResource)
+    private suspend fun addRoleToUser(userBase: UserBase, companyRole: CompanyRole): UserBase {
+        userBase.roles?.add(companyRole) ?: run {
+            userBase.roles = mutableListOf(companyRole)
         }
-        return userRepository.save(user!!)
+        return userRepository.save(userBase)
     }
 }

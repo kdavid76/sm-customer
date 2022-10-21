@@ -29,6 +29,7 @@ class UserResourceValidator: Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "errors.user.resource.email.required")
 
         // At least one valid CompanyRole is required
+        /*
         val roles = user.roles
         roles?.let {
             if(roles.size == 0) {
@@ -37,6 +38,7 @@ class UserResourceValidator: Validator {
         } ?: run {
             errors.rejectValue("roles", "errors.user.resource.roles.required")
         }
+         */
 
         // If password defined it must match the required format
         user.password?.let {

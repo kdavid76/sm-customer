@@ -20,11 +20,9 @@ class CompanyWithAdminResourceValidator (
         val resource = target as CompanyWithAdminResource
 
 
-        resource.companyResource.let {
-            val companyErrors = BeanPropertyBindingResult(it, CompanyWithAdminResource::class.java.name)
-            companyValidator.validate(it, companyErrors)
-            errors.addAllErrors(companyErrors)
-        }
+        val companyErrors = BeanPropertyBindingResult(resource.companyResource, CompanyWithAdminResource::class.java.name)
+        companyValidator.validate(resource.companyResource, companyErrors)
+        errors.addAllErrors(companyErrors)
 
         resource.userResource?.let {
             val userErrors = BeanPropertyBindingResult(it, CompanyWithAdminResource::class.java.name)
