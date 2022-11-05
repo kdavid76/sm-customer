@@ -13,7 +13,7 @@ import java.time.Instant
 import java.util.*
 
 @Document("users")
-data class UserBase (
+data class UserProfile(
     @Id
     var id: String? = null,
 
@@ -47,26 +47,31 @@ data class UserBase (
     var accountExpiryTime: Date? = null,
     var activationKey: String? = null,
     var activatedTime: Date? = null,
-    var accountLocked:Boolean = true,
+    var accountLocked: Boolean = true,
     var enabled: Boolean = false,
     var middleName: String? = null,
 ) {
     @JsonIgnore
-    fun isAccountNonExpired() : Boolean = accountExpiryTime?.after(Date.from(Instant.now())) ?: true
+    fun isAccountNonExpired(): Boolean = accountExpiryTime?.after(Date.from(Instant.now())) ?: true
+
     @JsonIgnore
-    fun isPasswordNonExpired() : Boolean = passwordExpiryTime?.after(Date.from(Instant.now())) ?: true
+    fun isPasswordNonExpired(): Boolean = passwordExpiryTime?.after(Date.from(Instant.now())) ?: true
+
     @JsonIgnore
-    fun getGrantedAuthorities() : Collection<GrantedAuthority>  {
+    fun getGrantedAuthorities(): Collection<GrantedAuthority> {
         val list = mutableListOf<GrantedAuthority>()
-        list.addAll(roles?.asSequence()?.map { it.role }?.distinct()?.map { GrantedAuthority { it.name } }?.toList() ?: mutableListOf())
+        list.addAll(
+            roles?.asSequence()?.map { it.role }?.distinct()?.map { GrantedAuthority { it.name } }?.toList()
+                ?: mutableListOf()
+        )
         return list
     }
 
-    override fun toString(): String = "UserBase[id=${id?:""}, username=$username, firstName=$firstName," +
-            " middleName=${middleName?:""}, lastName=$lastName, email=$email, failedLoginAttempts=${failedLoginAttempts?:""}," +
+    override fun toString(): String = "UserBase[id=${id ?: ""}, username=$username, firstName=$firstName," +
+            " middleName=${middleName ?: ""}, lastName=$lastName, email=$email, failedLoginAttempts=${failedLoginAttempts ?: ""}," +
             " accountLocked=${accountLocked}, passwordExpiringEnabled=${passwordExpiringEnabled}," +
-            " enabled=$enabled, registrationTime=${registrationTime?:""}, activatedTime=${activatedTime?:""}," +
-            " lastModificationTime=${lastModificationTime?:""}, passwordExpiryTime=${passwordExpiryTime?:""}," +
-            " accountExpiryTime=${accountExpiryTime?:""}, activationKey=${activationKey?:""}, version=$version]"
+            " enabled=$enabled, registrationTime=${registrationTime ?: ""}, activatedTime=${activatedTime ?: ""}," +
+            " lastModificationTime=${lastModificationTime ?: ""}, passwordExpiryTime=${passwordExpiryTime ?: ""}," +
+            " accountExpiryTime=${accountExpiryTime ?: ""}, activationKey=${activationKey ?: ""}, version=$version]"
 
 }

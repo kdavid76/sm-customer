@@ -4,7 +4,7 @@ import com.bkk.sm.mongo.customers.converters.CompanyConverter
 import com.bkk.sm.mongo.customers.converters.UserConverter
 import com.bkk.sm.mongo.customers.model.Roles
 import com.bkk.sm.mongo.customers.model.company.CompanyRole
-import com.bkk.sm.mongo.customers.model.user.UserBase
+import com.bkk.sm.mongo.customers.model.user.UserProfile
 import com.bkk.sm.mongo.customers.repositories.CompanyRepository
 import com.bkk.sm.mongo.customers.repositories.UserRepository
 import com.bkk.sm.mongo.customers.resources.CompanyWithAdminResource
@@ -17,7 +17,12 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.validation.BeanPropertyBindingResult
 import org.springframework.validation.Errors
-import org.springframework.web.reactive.function.server.*
+import org.springframework.web.reactive.function.server.ServerRequest
+import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.reactive.function.server.awaitBodyOrNull
+import org.springframework.web.reactive.function.server.bodyAndAwait
+import org.springframework.web.reactive.function.server.bodyValueAndAwait
+import org.springframework.web.reactive.function.server.buildAndAwait
 
 @Component
 class CompanyHandler(
@@ -51,7 +56,7 @@ class CompanyHandler(
         val companyWithAdminResource = request.awaitBodyOrNull<CompanyWithAdminResource>()
         val errors: Errors? = validateCompanyWithAdminResource(companyWithAdminResource)
         errors?.let {
-            if(errors.hasErrors()) {
+            if (errors.hasErrors()) {
                 log.error { "Invalid payload, errors=$errors were found in request body" }
                 return ServerResponse.badRequest().bodyValueAndAwait(errors.allErrors)
             }
@@ -60,7 +65,7 @@ class CompanyHandler(
             return ServerResponse.badRequest().buildAndAwait()
         }
 
-        val company = companyRepository.findByCode(companyWithAdminResource!!.companyResource.code)
+        val company = companyRepository.findByCode(companyWithAdminResource !!.companyResource.code)
         company?.let {
             log.error { "Company with code=${it.code} already exists" }
             return ServerResponse.status(HttpStatus.CONFLICT).buildAndAwait()
@@ -69,16 +74,18 @@ class CompanyHandler(
         val saved = companyRepository.save(CompanyConverter.toCompany(companyWithAdminResource.companyResource))
         log.info { "Successfully saved company=$saved" }
 
-        var user: UserBase? = null
+        var user: UserProfile? = null
         companyWithAdminResource.userResource?.let {
             user = userRepository.findByUsername(it.username) ?: UserConverter.toUserBase(it)
-            user = addRoleToUser(user!!, CompanyRole(Roles.ROLE_ADMIN, saved.code))
+            user = addRoleToUser(user !!, CompanyRole(Roles.ROLE_ADMIN, saved.code))
         }
 
-    return ServerResponse.ok().bodyValueAndAwait(CompanyWithAdminResource(
-            CompanyConverter.toCompanyResource(saved),
-            if (user==null) null else UserConverter.toUserResource(user!!)
-        ))
+        return ServerResponse.status(HttpStatus.CREATED).bodyValueAndAwait(
+            CompanyWithAdminResource(
+                CompanyConverter.toCompanyResource(saved),
+                if (user == null) null else UserConverter.toUserResource(user !!)
+            )
+        )
     }
 
     private fun validateCompanyWithAdminResource(companyWithAdminResource: CompanyWithAdminResource?): Errors? {
@@ -91,10 +98,10 @@ class CompanyHandler(
         }
     }
 
-    private suspend fun addRoleToUser(userBase: UserBase, companyRole: CompanyRole): UserBase {
-        userBase.roles?.add(companyRole) ?: run {
-            userBase.roles = mutableListOf(companyRole)
+    private suspend fun addRoleToUser(userProfile: UserProfile, companyRole: CompanyRole): UserProfile {
+        userProfile.roles?.add(companyRole) ?: run {
+            userProfile.roles = mutableListOf(companyRole)
         }
-        return userRepository.save(userBase)
+        return userRepository.save(userProfile)
     }
 }

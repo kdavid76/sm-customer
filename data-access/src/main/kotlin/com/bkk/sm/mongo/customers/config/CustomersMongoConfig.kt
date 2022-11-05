@@ -20,10 +20,10 @@ import java.util.*
 class CustomersMongoConfig : AbstractReactiveMongoConfiguration() {
 
     @Value("\${com.bkk.sm.mongo.customers.database}")
-    val database : String = ""
+    val database: String = ""
 
     @Value("\${com.bkk.sm.mongo.customers.uri}")
-    val uri : String = ""
+    val uri: String = ""
 
     override fun getDatabaseName(): String = database
 
@@ -34,7 +34,7 @@ class CustomersMongoConfig : AbstractReactiveMongoConfiguration() {
     @Bean(name = ["customerMongoClient"])
     override fun reactiveMongoClient(): MongoClient = MongoClients.create(uri)
 
-    @Bean(name =  ["customerMongoDbFactory"])
+    @Bean(name = ["customerMongoDbFactory"])
     override fun reactiveMongoDbFactory(): ReactiveMongoDatabaseFactory =
         SimpleReactiveMongoDatabaseFactory(reactiveMongoClient(), databaseName)
 

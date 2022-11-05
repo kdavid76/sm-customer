@@ -11,7 +11,7 @@ import com.bkk.sm.mongo.customers.converters.UserConverter
 import com.bkk.sm.mongo.customers.model.Roles
 import com.bkk.sm.mongo.customers.model.company.Company
 import com.bkk.sm.mongo.customers.model.company.CompanyRole
-import com.bkk.sm.mongo.customers.model.user.UserBase
+import com.bkk.sm.mongo.customers.model.user.UserProfile
 import com.bkk.sm.mongo.customers.repositories.CompanyRepository
 import com.bkk.sm.mongo.customers.repositories.UserRepository
 import com.bkk.sm.mongo.customers.resources.CompanyResource
@@ -36,8 +36,10 @@ import java.time.Duration
 import java.time.LocalDateTime
 
 @WebFluxTest
-@Import(TestConfig::class, RouterConfig::class,
-    SecurityConfig::class, UserHandler::class, CompanyHandler::class)
+@Import(
+    TestConfig::class, RouterConfig::class,
+    SecurityConfig::class, UserHandler::class, CompanyHandler::class
+)
 @ActiveProfiles("test")
 class CompanyRouterMockedIntegrationTest(
     @Autowired var client: WebTestClient
@@ -48,20 +50,28 @@ class CompanyRouterMockedIntegrationTest(
     @MockkBean
     lateinit var companyRepository: CompanyRepository
 
-    val davidk = TestUtils.createUser("123456789", "davidk",
+    val davidk = TestUtils.createUserProfile(
+        "123456789", "davidk",
         "Krisztian", "David", "my@email.com",
-        mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")))
-    val bkkadmin = TestUtils.createUser("987654", "bkkadmin",
+        mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+    )
+    val bkkadmin = TestUtils.createUserProfile(
+        "987654", "bkkadmin",
         "Mike", "Hammer", "my@email.com",
-        mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system")))
-    private val bkk = TestUtils.createCompanyResource(null, "bkk", "Beszterce KK",
+        mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system"))
+    )
+    private val bkk = TestUtils.createCompanyResource(
+        null, "bkk", "Beszterce KK",
         "bkk@bkk.hu", null, null, "",
         LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true, 1,
-        TestUtils.createAddress("3100", "salgótarján", "Utca. 1", null, null))
-    private val apple = TestUtils.createCompany(null, "apple", "Apple",
+        TestUtils.createAddress("3100", "salgótarján", "Utca. 1", null, null)
+    )
+    private val apple = TestUtils.createCompany(
+        null, "apple", "Apple",
         "info@apple.com", null, null, "",
         LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true, 1,
-        TestUtils.createAddress("3100", "Salgótarján", "Utca. 1", null, null))
+        TestUtils.createAddress("3100", "Salgótarján", "Utca. 1", null, null)
+    )
 
 
     @BeforeEach
@@ -174,7 +184,7 @@ class CompanyRouterMockedIntegrationTest(
             davidk
         }
 
-        val user = slot<UserBase>()
+        val user = slot<UserProfile>()
         coEvery {
             userRepository.save(capture(user))
         } answers {
@@ -209,9 +219,10 @@ class CompanyRouterMockedIntegrationTest(
                 }
                 if (companyWithAdminResource?.userResource != null) {
                     Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
-                    Assertions.assertThat(companyWithAdminResource.userResource!!.username).isEqualTo(davidk.username)
-                    Assertions.assertThat(companyWithAdminResource.userResource!!.email).isEqualTo(davidk.email)
-                    Assertions.assertThat(companyWithAdminResource.userResource!!.firstName).isEqualTo(davidk.firstName)
+                    Assertions.assertThat(companyWithAdminResource.userResource !!.username).isEqualTo(davidk.username)
+                    Assertions.assertThat(companyWithAdminResource.userResource !!.email).isEqualTo(davidk.email)
+                    Assertions.assertThat(companyWithAdminResource.userResource !!.firstName)
+                        .isEqualTo(davidk.firstName)
                 }
             }
     }
@@ -232,7 +243,7 @@ class CompanyRouterMockedIntegrationTest(
             null
         }
 
-        val user = slot<UserBase>()
+        val user = slot<UserProfile>()
         coEvery {
             userRepository.save(capture(user))
         } answers {
@@ -268,9 +279,11 @@ class CompanyRouterMockedIntegrationTest(
                 if (companyWithAdminResource != null) {
                     if (companyWithAdminResource.userResource != null) {
                         Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
-                        Assertions.assertThat(companyWithAdminResource.userResource!!.username).isEqualTo(davidk.username)
-                        Assertions.assertThat(companyWithAdminResource.userResource!!.email).isEqualTo(davidk.email)
-                        Assertions.assertThat(companyWithAdminResource.userResource!!.firstName).isEqualTo(davidk.firstName)
+                        Assertions.assertThat(companyWithAdminResource.userResource !!.username)
+                            .isEqualTo(davidk.username)
+                        Assertions.assertThat(companyWithAdminResource.userResource !!.email).isEqualTo(davidk.email)
+                        Assertions.assertThat(companyWithAdminResource.userResource !!.firstName)
+                            .isEqualTo(davidk.firstName)
                     }
                 }
             }
@@ -291,7 +304,7 @@ class CompanyRouterMockedIntegrationTest(
             bkkadmin
         }
 
-        val user = slot<UserBase>()
+        val user = slot<UserProfile>()
         coEvery {
             userRepository.save(capture(user))
         } answers {
@@ -321,9 +334,11 @@ class CompanyRouterMockedIntegrationTest(
 
                 if (companyWithAdminResource?.userResource != null) {
                     Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
-                    Assertions.assertThat(companyWithAdminResource.userResource!!.roles).isNotNull
-                    companyWithAdminResource.userResource!!.roles?.let { it1 -> Assertions.assertThat(it1.size).isEqualTo(2) }
-                    Assertions.assertThat(companyWithAdminResource.userResource!!.roles).containsExactly(
+                    Assertions.assertThat(companyWithAdminResource.userResource !!.roles).isNotNull
+                    companyWithAdminResource.userResource !!.roles?.let { it1 ->
+                        Assertions.assertThat(it1.size).isEqualTo(2)
+                    }
+                    Assertions.assertThat(companyWithAdminResource.userResource !!.roles).containsExactly(
                         CompanyRole(Roles.ROLE_SUPERADMIN, "system"),
                         CompanyRole(Roles.ROLE_ADMIN, "bkk")
                     )
@@ -348,7 +363,7 @@ class CompanyRouterMockedIntegrationTest(
             noRoleUser
         }
 
-        val user = slot<UserBase>()
+        val user = slot<UserProfile>()
         coEvery {
             userRepository.save(capture(user))
         } answers {
@@ -378,9 +393,11 @@ class CompanyRouterMockedIntegrationTest(
 
                 if (companyWithAdminResource?.userResource != null) {
                     Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
-                    Assertions.assertThat(companyWithAdminResource.userResource!!.roles).isNotNull
-                    companyWithAdminResource.userResource!!.roles?.let { it1 -> Assertions.assertThat(it1.size).isEqualTo(1) }
-                    Assertions.assertThat(companyWithAdminResource.userResource!!.roles).containsExactly(
+                    Assertions.assertThat(companyWithAdminResource.userResource !!.roles).isNotNull
+                    companyWithAdminResource.userResource !!.roles?.let { it1 ->
+                        Assertions.assertThat(it1.size).isEqualTo(1)
+                    }
+                    Assertions.assertThat(companyWithAdminResource.userResource !!.roles).containsExactly(
                         CompanyRole(Roles.ROLE_ADMIN, "bkk")
                     )
                 }

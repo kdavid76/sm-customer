@@ -16,6 +16,8 @@ class TestConfig {
 
     @Bean
     fun companyResourceValidator(): CompanyResourceValidator = CompanyResourceValidator()
+
     @Bean
-    fun companyWithAdminResourceValidator(): CompanyWithAdminResourceValidator = CompanyWithAdminResourceValidator(companyResourceValidator(), userResourceValidator())
+    fun companyWithAdminResourceValidator(): CompanyWithAdminResourceValidator =
+        CompanyWithAdminResourceValidator(companyResourceValidator(), userResourceValidator())
 }

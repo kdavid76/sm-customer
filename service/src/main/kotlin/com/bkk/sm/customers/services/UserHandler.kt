@@ -1,7 +1,7 @@
 package com.bkk.sm.customers.services
 
 import com.bkk.sm.mongo.customers.converters.UserConverter
-import com.bkk.sm.mongo.customers.model.user.UserBase
+import com.bkk.sm.mongo.customers.model.user.UserProfile
 import com.bkk.sm.mongo.customers.repositories.UserRepository
 import com.bkk.sm.mongo.customers.resources.UserResource
 import com.bkk.sm.mongo.customers.validators.UserResourceValidator
@@ -14,7 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import org.springframework.validation.BeanPropertyBindingResult
 import org.springframework.validation.Errors
-import org.springframework.web.reactive.function.server.*
+import org.springframework.web.reactive.function.server.ServerRequest
+import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.reactive.function.server.awaitBodyOrNull
+import org.springframework.web.reactive.function.server.bodyAndAwait
+import org.springframework.web.reactive.function.server.bodyValueAndAwait
+import org.springframework.web.reactive.function.server.buildAndAwait
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -50,7 +55,7 @@ class UserHandler(
         val userResource = request.awaitBodyOrNull<UserResource>()
         val errors: Errors? = validateUserResource(userResource)
         errors?.let {
-            if(errors.hasErrors()) {
+            if (errors.hasErrors()) {
                 log.error { "Invalid payload, errors=$errors were found in request body" }
                 return ServerResponse.badRequest().bodyValueAndAwait(errors.allErrors)
             }
@@ -58,7 +63,7 @@ class UserHandler(
             return ServerResponse.badRequest().buildAndAwait()
         }
 
-        val user: UserBase? = userRepository.findByUsername(userResource!!.username)
+        val user: UserProfile? = userRepository.findByUsername(userResource !!.username)
 
         user?.let {
             log.error { "User with userName=${user.username} has already been exists in the system" }
@@ -84,7 +89,7 @@ class UserHandler(
     }
 
     private fun validateUserResource(userResource: UserResource?): Errors? {
-        if(userResource == null) {
+        if (userResource == null) {
             return null
         }
         val errors: Errors = BeanPropertyBindingResult(userResource, UserResource::class.java.name)

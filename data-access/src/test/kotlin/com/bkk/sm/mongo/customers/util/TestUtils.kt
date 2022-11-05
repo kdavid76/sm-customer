@@ -1,4 +1,4 @@
-package com.bkk.sm.customers.utils
+package com.bkk.sm.mongo.customers.util
 
 import com.bkk.sm.mongo.customers.model.Address
 import com.bkk.sm.mongo.customers.model.company.Company
@@ -6,35 +6,11 @@ import com.bkk.sm.mongo.customers.model.company.CompanyRole
 import com.bkk.sm.mongo.customers.model.user.UserProfile
 import com.bkk.sm.mongo.customers.resources.CompanyResource
 import com.bkk.sm.mongo.customers.resources.UserResource
-import kotlinx.coroutines.reactor.awaitSingleOrNull
-import org.springframework.http.codec.HttpMessageWriter
-import org.springframework.mock.http.server.reactive.MockServerHttpRequest
-import org.springframework.mock.web.server.MockServerWebExchange
-import org.springframework.web.reactive.function.server.HandlerStrategies
-import org.springframework.web.reactive.function.server.ServerResponse
-import org.springframework.web.reactive.result.view.ViewResolver
 import java.time.LocalDateTime
 
 class TestUtils {
 
     companion object {
-        private val DEFAULT_CONTEXT: ServerResponse.Context = object : ServerResponse.Context {
-            override fun messageWriters(): List<HttpMessageWriter<*>> {
-                return HandlerStrategies.withDefaults().messageWriters()
-            }
-
-            override fun viewResolvers(): List<ViewResolver> {
-                return listOf()
-            }
-        }
-
-        suspend fun getResponseString(serverResponse: ServerResponse): String? {
-            val request = MockServerHttpRequest.get("http://foo.foo").build()
-            val exchange = MockServerWebExchange.from(request)
-            serverResponse.writeTo(exchange, DEFAULT_CONTEXT).awaitSingleOrNull()
-            val response = exchange.response
-            return response.bodyAsString.awaitSingleOrNull()
-        }
 
         fun createUserProfile(
             id: String,

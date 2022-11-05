@@ -8,10 +8,11 @@ import org.springframework.validation.Validator
 import java.util.regex.Pattern
 
 @Component
-class UserResourceValidator: Validator {
+class UserResourceValidator : Validator {
 
     companion object {
-        val PASSWORD_PATTERN: Pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*#?&_\\-+=\\(\\)§:,;])[a-zA-Z\\d@\$!%*#?&_\\-+=\\(\\)§:,;]{8,}\$")
+        val PASSWORD_PATTERN: Pattern =
+            Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*#?&_\\-+=\\(\\)§:,;])[a-zA-Z\\d@\$!%*#?&_\\-+=\\(\\)§:,;]{8,}\$")
         val EMAIL_PATTERN: Pattern = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,5}\$")
     }
 
@@ -43,14 +44,14 @@ class UserResourceValidator: Validator {
         // If password defined it must match the required format
         user.password?.let {
             val matcher = user.password?.let { it1 -> PASSWORD_PATTERN.matcher(it1) }
-            if (matcher != null && !matcher.matches()) {
+            if (matcher != null && ! matcher.matches()) {
                 errors.rejectValue("password", "errors.user.resource.password.format")
             }
         }
 
         // Email address must be in the right format
         val emailMatcher = EMAIL_PATTERN.matcher(user.email)
-        if(!emailMatcher.matches()) {
+        if (! emailMatcher.matches()) {
             errors.rejectValue("email", "errors.user.resource.email.format")
         }
     }

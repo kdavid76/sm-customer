@@ -7,10 +7,10 @@ import org.springframework.validation.Errors
 import org.springframework.validation.Validator
 
 @Component
-class CompanyWithAdminResourceValidator (
+class CompanyWithAdminResourceValidator(
     private val companyValidator: CompanyResourceValidator,
     private val userValidator: UserResourceValidator
-): Validator {
+) : Validator {
 
     override fun supports(clazz: Class<*>): Boolean {
         return CompanyWithAdminResource::class.java.isAssignableFrom(clazz)
@@ -20,7 +20,8 @@ class CompanyWithAdminResourceValidator (
         val resource = target as CompanyWithAdminResource
 
 
-        val companyErrors = BeanPropertyBindingResult(resource.companyResource, CompanyWithAdminResource::class.java.name)
+        val companyErrors =
+            BeanPropertyBindingResult(resource.companyResource, CompanyWithAdminResource::class.java.name)
         companyValidator.validate(resource.companyResource, companyErrors)
         errors.addAllErrors(companyErrors)
 

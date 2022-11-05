@@ -16,7 +16,7 @@ class RouterConfig() {
     @Bean
     fun userRoutes(userHandler: UserHandler) = coRouter {
         before {
-            log.info{"Processing User request from ${it.remoteAddress().orElse(null)} with headers=${it.headers()}"}
+            log.info { "Processing User request from ${it.remoteAddress().orElse(null)} with headers=${it.headers()}" }
             it
         }
 
@@ -40,7 +40,11 @@ class RouterConfig() {
     @Bean
     fun companyRoutes(companyHandler: CompanyHandler) = coRouter {
         before {
-            log.info{"Processing Company request from ${it.remoteAddress().orElse(null)} with headers=${it.headers()}"}
+            log.info {
+                "Processing Company request from ${
+                    it.remoteAddress().orElse(null)
+                } with headers=${it.headers()}"
+            }
             it
         }
 
