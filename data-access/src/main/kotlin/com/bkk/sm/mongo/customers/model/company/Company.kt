@@ -1,6 +1,6 @@
 package com.bkk.sm.mongo.customers.model.company
 
-import com.bkk.sm.mongo.customers.model.Address
+import com.bkk.sm.common.model.Address
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed

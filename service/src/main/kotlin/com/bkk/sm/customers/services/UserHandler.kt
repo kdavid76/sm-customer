@@ -1,10 +1,10 @@
 package com.bkk.sm.customers.services
 
+import com.bkk.sm.common.customer.resources.UserResource
+import com.bkk.sm.common.customer.validators.UserResourceValidator
 import com.bkk.sm.mongo.customers.converters.UserConverter
 import com.bkk.sm.mongo.customers.model.user.UserProfile
 import com.bkk.sm.mongo.customers.repositories.UserRepository
-import com.bkk.sm.mongo.customers.resources.UserResource
-import com.bkk.sm.mongo.customers.validators.UserResourceValidator
 import kotlinx.coroutines.flow.map
 import mu.KotlinLogging
 import org.apache.commons.lang3.RandomStringUtils

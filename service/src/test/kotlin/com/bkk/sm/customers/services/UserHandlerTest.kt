@@ -1,12 +1,12 @@
 package com.bkk.sm.customers.services
 
+import com.bkk.sm.common.customer.company.CompanyRole
+import com.bkk.sm.common.customer.resources.UserResource
+import com.bkk.sm.common.customer.validators.UserResourceValidator
+import com.bkk.sm.common.model.Roles
 import com.bkk.sm.customers.utils.TestUtils
 import com.bkk.sm.mongo.customers.converters.UserConverter
-import com.bkk.sm.mongo.customers.model.Roles
-import com.bkk.sm.mongo.customers.model.company.CompanyRole
 import com.bkk.sm.mongo.customers.repositories.UserRepository
-import com.bkk.sm.mongo.customers.resources.UserResource
-import com.bkk.sm.mongo.customers.validators.UserResourceValidator
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe

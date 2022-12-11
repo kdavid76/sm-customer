@@ -24,6 +24,12 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- SM PROJECT -->
+        <dependency>
+            <groupId>com.sportmanagement.bkk</groupId>
+            <artifactId>common-models</artifactId>
+        </dependency>
+
         <!-- KOTLIN -->
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
@@ -99,6 +105,11 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+
         </plugins>
     </build>
 </project>

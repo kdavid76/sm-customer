@@ -1,14 +1,14 @@
 package com.bkk.sm.customers.services
 
+import com.bkk.sm.common.customer.company.CompanyRole
+import com.bkk.sm.common.customer.resources.CompanyWithAdminResource
+import com.bkk.sm.common.customer.validators.CompanyWithAdminResourceValidator
+import com.bkk.sm.common.model.Roles
 import com.bkk.sm.mongo.customers.converters.CompanyConverter
 import com.bkk.sm.mongo.customers.converters.UserConverter
-import com.bkk.sm.mongo.customers.model.Roles
-import com.bkk.sm.mongo.customers.model.company.CompanyRole
 import com.bkk.sm.mongo.customers.model.user.UserProfile
 import com.bkk.sm.mongo.customers.repositories.CompanyRepository
 import com.bkk.sm.mongo.customers.repositories.UserRepository
-import com.bkk.sm.mongo.customers.resources.CompanyWithAdminResource
-import com.bkk.sm.mongo.customers.validators.CompanyWithAdminResourceValidator
 import kotlinx.coroutines.flow.map
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus
@@ -65,7 +65,7 @@ class CompanyHandler(
             return ServerResponse.badRequest().buildAndAwait()
         }
 
-        val company = companyRepository.findByCode(companyWithAdminResource !!.companyResource.code)
+        val company = companyRepository.findByCode(companyWithAdminResource!!.companyResource.code)
         company?.let {
             log.error { "Company with code=${it.code} already exists" }
             return ServerResponse.status(HttpStatus.CONFLICT).buildAndAwait()

@@ -20,6 +20,11 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.sportmanagement.bkk</groupId>
+            <artifactId>common-models</artifactId>
+        </dependency>
+
         <!-- SPRING -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -86,6 +91,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sportmanagement.bkk</groupId>
+            <artifactId>common-models</artifactId>
+            <type>test-jar</type>
             <scope>test</scope>
         </dependency>
 
@@ -159,6 +171,10 @@
                         <version>${kotlin.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

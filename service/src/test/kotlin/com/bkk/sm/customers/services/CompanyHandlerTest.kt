@@ -1,18 +1,20 @@
 package com.bkk.sm.customers.services
 
+import com.bkk.sm.common.customer.company.CompanyRole
+import com.bkk.sm.common.customer.resources.CompanyResource
+import com.bkk.sm.common.customer.resources.CompanyWithAdminResource
+import com.bkk.sm.common.customer.validators.CompanyResourceValidator
+import com.bkk.sm.common.customer.validators.CompanyWithAdminResourceValidator
+import com.bkk.sm.common.customer.validators.UserResourceValidator
+import com.bkk.sm.common.model.AreaType
+import com.bkk.sm.common.model.Roles
+import com.bkk.sm.common.utils.CommonResourceTestUtils
 import com.bkk.sm.customers.utils.TestUtils
 import com.bkk.sm.mongo.customers.converters.CompanyConverter
 import com.bkk.sm.mongo.customers.converters.UserConverter
-import com.bkk.sm.mongo.customers.model.Roles
-import com.bkk.sm.mongo.customers.model.company.CompanyRole
 import com.bkk.sm.mongo.customers.model.user.UserProfile
 import com.bkk.sm.mongo.customers.repositories.CompanyRepository
 import com.bkk.sm.mongo.customers.repositories.UserRepository
-import com.bkk.sm.mongo.customers.resources.CompanyResource
-import com.bkk.sm.mongo.customers.resources.CompanyWithAdminResource
-import com.bkk.sm.mongo.customers.validators.CompanyResourceValidator
-import com.bkk.sm.mongo.customers.validators.CompanyWithAdminResourceValidator
-import com.bkk.sm.mongo.customers.validators.UserResourceValidator
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.kotest.matchers.collections.shouldContain
@@ -47,13 +49,19 @@ class CompanyHandlerTest {
         UUID.randomUUID().toString(), "bkk", "Beszterce KK",
         "besztercekk@email.com", "12345678-1-11", "11111111-22222222-33333333",
         "", LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true,
-        1, TestUtils.createAddress("3100", "Salgotarjan", "First Line 11", "", ""),
+        1, CommonResourceTestUtils.createAddress("Salgotarjan",
+            3100, "First Line", AreaType.KORUT, "11",
+            1, 1, null
+            )
     )
     private val skse = TestUtils.createCompany(
         UUID.randomUUID().toString(), "skse", "Salgotarjani KSE",
         "skse@email.com", "87654321-2-22", "44444444-55555555-66666666",
         "", LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true,
-        1, TestUtils.createAddress("3100", "Salgotarjan", "Martirok u. 18.", "", ""),
+        1, CommonResourceTestUtils.createAddress("Salgotarjan",
+            3100, "Martirok", AreaType.UT, "18",
+            1, 1, null
+        )
     )
 
     @BeforeEach

@@ -1,6 +1,6 @@
 package com.bkk.sm.mongo.customers.model.user
 
-import com.bkk.sm.mongo.customers.model.company.CompanyRole
+import com.bkk.sm.common.customer.company.CompanyRole
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.mongodb.lang.NonNull
 

@@ -1,7 +1,7 @@
 package com.bkk.sm.mongo.customers.converters
 
+import com.bkk.sm.common.customer.resources.CompanyResource
 import com.bkk.sm.mongo.customers.model.company.Company
-import com.bkk.sm.mongo.customers.resources.CompanyResource
 
 class CompanyConverter {
     companion object {

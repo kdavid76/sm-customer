@@ -1,7 +1,7 @@
 package com.bkk.sm.mongo.customers.converters
 
+import com.bkk.sm.common.customer.resources.UserResource
 import com.bkk.sm.mongo.customers.model.user.UserProfile
-import com.bkk.sm.mongo.customers.resources.UserResource
 
 class UserConverter {
     companion object {

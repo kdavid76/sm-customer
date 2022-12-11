@@ -1,5 +1,9 @@
 package com.bkk.sm.customers
 
+import com.bkk.sm.common.customer.company.CompanyRole
+import com.bkk.sm.common.customer.resources.UserResource
+import com.bkk.sm.common.model.Roles
+import com.bkk.sm.common.utils.CommonResourceTestUtils
 import com.bkk.sm.customers.config.RouterConfig
 import com.bkk.sm.customers.config.SecurityConfig
 import com.bkk.sm.customers.config.TestConfig
@@ -7,12 +11,9 @@ import com.bkk.sm.customers.services.CompanyHandler
 import com.bkk.sm.customers.services.UserHandler
 import com.bkk.sm.customers.utils.TestUtils
 import com.bkk.sm.mongo.customers.converters.UserConverter
-import com.bkk.sm.mongo.customers.model.Roles
-import com.bkk.sm.mongo.customers.model.company.CompanyRole
 import com.bkk.sm.mongo.customers.model.user.UserProfile
 import com.bkk.sm.mongo.customers.repositories.CompanyRepository
 import com.bkk.sm.mongo.customers.repositories.UserRepository
-import com.bkk.sm.mongo.customers.resources.UserResource
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.clearMocks
 import io.mockk.coEvery
@@ -162,7 +163,7 @@ class UserRouterMockedIntegrationTest(
             user.captured
         }
 
-        val dkResource = TestUtils.createUserResource(
+        val dkResource = CommonResourceTestUtils.createUserResource(
             "123456789", " ", "wwww",
             "Krisztian", "David", "myemail.com",
             mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
@@ -195,7 +196,7 @@ class UserRouterMockedIntegrationTest(
             user.captured
         }
 
-        val dkResource = TestUtils.createUserResource(
+        val dkResource = CommonResourceTestUtils.createUserResource(
             "123456789", "davidk", "Jamcsa1?",
             "Krisztian", "David", "my@email.com",
             mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
@@ -214,7 +215,7 @@ class UserRouterMockedIntegrationTest(
             .consumeWith {
                 val userResource = it.responseBody
                 Assertions.assertThat(userResource).isNotNull
-                Assertions.assertThat(userResource !!.email).isEqualTo(dkResource.email)
+                Assertions.assertThat(userResource!!.email).isEqualTo(dkResource.email)
                 Assertions.assertThat(userResource.firstName).isEqualTo(dkResource.firstName)
                 Assertions.assertThat(userResource.registrationTime).isNotNull
             }
@@ -235,7 +236,7 @@ class UserRouterMockedIntegrationTest(
                 mutableListOf(CompanyRole(Roles.ROLE_USER, "bkk"))
             )
         }
-        val dkResource = TestUtils.createUserResource(
+        val dkResource = CommonResourceTestUtils.createUserResource(
             "123456789", "davidk", "Jamcsa1?",
             "Krisztian", "David", "my@email.com",
             mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))

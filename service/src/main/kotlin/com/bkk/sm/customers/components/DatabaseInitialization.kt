@@ -1,7 +1,7 @@
 package com.bkk.sm.customers.components
 
-import com.bkk.sm.mongo.customers.model.Roles
-import com.bkk.sm.mongo.customers.model.company.CompanyRole
+import com.bkk.sm.common.customer.company.CompanyRole
+import com.bkk.sm.common.model.Roles
 import com.bkk.sm.mongo.customers.model.user.UserProfile
 import com.bkk.sm.mongo.customers.repositories.UserRepository
 import kotlinx.coroutines.launch
