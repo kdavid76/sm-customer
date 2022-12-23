@@ -2,31 +2,97 @@ package com.bkk.sm.customers.services
 
 import com.bkk.sm.common.customer.company.CompanyRole
 import com.bkk.sm.common.customer.resources.UserResource
-import com.bkk.sm.common.customer.validators.UserResourceValidator
 import com.bkk.sm.common.model.Roles
+import com.bkk.sm.customers.services.handlers.UserHandler
 import com.bkk.sm.customers.utils.TestUtils
 import com.bkk.sm.mongo.customers.converters.UserConverter
-import com.bkk.sm.mongo.customers.repositories.UserRepository
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.mockk.clearMocks
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.reactive.function.server.MockServerRequest
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.reactive.function.server.buildAndAwait
 import reactor.core.publisher.Mono
 
 @ActiveProfiles("test")
 class UserHandlerTest {
 
+    private val userService = mockk<UserService>()
+    private val userHandler = UserHandler(userService)
+
+    @BeforeEach
+    fun initMocks() {
+        clearMocks(userService)
+    }
+
+    @Test
+    fun `Find all users`(): Unit = runBlocking {
+        // given
+        coEvery { userService.findAllUsers() } returns ServerResponse.ok().buildAndAwait()
+
+        // when
+        val request = MockServerRequest.builder()
+        userHandler.findAll(request.build())
+
+        // then
+        coVerify { userService.findAllUsers() }
+    }
+
+    @Test
+    fun `Find a user by username`(): Unit = runBlocking {
+        // given
+        coEvery { userService.findUserByUsername(any()) } returns ServerResponse.ok().buildAndAwait()
+
+        val request = MockServerRequest.builder().pathVariable("username", "davidk")
+
+        // when
+        userHandler.findByUsername(request.build())
+
+        // then
+        coVerify { userService.findUserByUsername("davidk") }
+    }
+
+    @Test
+    fun `Missing payload while registering user`(): Unit = runBlocking {
+        // given
+        // given
+        val request = MockServerRequest.builder().body(Mono.empty<UserResource>())
+
+        // when
+        val response = userHandler.add(request)
+
+        // then
+        response.statusCode() shouldBe HttpStatus.BAD_REQUEST
+        coVerify(exactly = 0) { userService.registerUser( any()) }
+    }
+
+    @Test
+    fun `Registering user`(): Unit = runBlocking {
+        // given
+        val davidk = TestUtils.createUserProfile(
+            "123456789", "davidk",
+            "Krisztian", "David", "my@email.com",
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+        )
+        val request = MockServerRequest.builder().body(Mono.just(UserConverter.toUserResource(davidk)))
+        coEvery { userService.registerUser(any()) } returns ServerResponse.status(HttpStatus.CREATED).buildAndAwait()
+
+        // when
+        val response = userHandler.add(request)
+
+        // then
+        response.statusCode() shouldBe HttpStatus.CREATED
+        coVerify { userService.registerUser( any()) }
+    }
+
+/*
     private val userRepository = mockk<UserRepository>()
     private val passwordEncoder = mockk<PasswordEncoder>()
     private val userResourceValidator = UserResourceValidator()
@@ -189,4 +255,5 @@ class UserHandlerTest {
         result.username shouldBe bkkadmin.username
         result.email shouldBe bkkadmin.email
     }
+ */
 }

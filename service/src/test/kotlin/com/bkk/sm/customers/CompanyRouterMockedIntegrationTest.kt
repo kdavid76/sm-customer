@@ -1,16 +1,16 @@
 package com.bkk.sm.customers
 
 import com.bkk.sm.common.customer.company.CompanyRole
+import com.bkk.sm.common.customer.resources.CompanyAndUserResource
 import com.bkk.sm.common.customer.resources.CompanyResource
-import com.bkk.sm.common.customer.resources.CompanyWithAdminResource
 import com.bkk.sm.common.model.AreaType
 import com.bkk.sm.common.model.Roles
 import com.bkk.sm.common.utils.CommonResourceTestUtils
 import com.bkk.sm.customers.config.RouterConfig
 import com.bkk.sm.customers.config.SecurityConfig
 import com.bkk.sm.customers.config.TestConfig
-import com.bkk.sm.customers.services.CompanyHandler
-import com.bkk.sm.customers.services.UserHandler
+import com.bkk.sm.customers.services.handlers.CompanyHandler
+import com.bkk.sm.customers.services.handlers.UserHandler
 import com.bkk.sm.customers.utils.TestUtils
 import com.bkk.sm.mongo.customers.converters.CompanyConverter
 import com.bkk.sm.mongo.customers.converters.UserConverter
@@ -158,7 +158,7 @@ class CompanyRouterMockedIntegrationTest(
             .header("API_VERSION", "V1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(CompanyWithAdminResource(company, UserConverter.toUserResource(davidk)))
+            .bodyValue(CompanyAndUserResource(company, UserConverter.toUserResource(davidk)))
             .exchange()
             .expectStatus().isBadRequest
     }
@@ -176,7 +176,7 @@ class CompanyRouterMockedIntegrationTest(
             .header("API_VERSION", "V1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(CompanyWithAdminResource(bkk, UserConverter.toUserResource(davidk)))
+            .bodyValue(CompanyAndUserResource(bkk, UserConverter.toUserResource(davidk)))
             .exchange()
             .expectStatus().isEqualTo(HttpStatus.CONFLICT)
     }
@@ -216,24 +216,24 @@ class CompanyRouterMockedIntegrationTest(
             .header("API_VERSION", "V1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(CompanyWithAdminResource(bkk, UserConverter.toUserResource(davidk)))
+            .bodyValue(CompanyAndUserResource(bkk, UserConverter.toUserResource(davidk)))
             .exchange()
             .expectStatus().isCreated
-            .expectBody<CompanyWithAdminResource>()
+            .expectBody<CompanyAndUserResource>()
             .consumeWith {
-                val companyWithAdminResource = it.responseBody
-                Assertions.assertThat(companyWithAdminResource).isNotNull
-                if (companyWithAdminResource != null) {
-                    Assertions.assertThat(companyWithAdminResource.companyResource).isNotNull
-                    Assertions.assertThat(companyWithAdminResource.companyResource.code).isEqualTo(bkk.code)
-                    Assertions.assertThat(companyWithAdminResource.companyResource.name).isEqualTo(bkk.name)
-                    Assertions.assertThat(companyWithAdminResource.companyResource.email).isEqualTo(bkk.email)
+                val CompanyAndUserResource = it.responseBody
+                Assertions.assertThat(CompanyAndUserResource).isNotNull
+                if (CompanyAndUserResource != null) {
+                    Assertions.assertThat(CompanyAndUserResource.companyResource).isNotNull
+                    Assertions.assertThat(CompanyAndUserResource.companyResource.code).isEqualTo(bkk.code)
+                    Assertions.assertThat(CompanyAndUserResource.companyResource.name).isEqualTo(bkk.name)
+                    Assertions.assertThat(CompanyAndUserResource.companyResource.email).isEqualTo(bkk.email)
                 }
-                if (companyWithAdminResource?.userResource != null) {
-                    Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
-                    Assertions.assertThat(companyWithAdminResource.userResource !!.username).isEqualTo(davidk.username)
-                    Assertions.assertThat(companyWithAdminResource.userResource !!.email).isEqualTo(davidk.email)
-                    Assertions.assertThat(companyWithAdminResource.userResource !!.firstName)
+                if (CompanyAndUserResource?.userResource != null) {
+                    Assertions.assertThat(CompanyAndUserResource.userResource).isNotNull
+                    Assertions.assertThat(CompanyAndUserResource.userResource !!.username).isEqualTo(davidk.username)
+                    Assertions.assertThat(CompanyAndUserResource.userResource !!.email).isEqualTo(davidk.email)
+                    Assertions.assertThat(CompanyAndUserResource.userResource !!.firstName)
                         .isEqualTo(davidk.firstName)
                 }
             }
@@ -275,26 +275,26 @@ class CompanyRouterMockedIntegrationTest(
             .header("API_VERSION", "V1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(CompanyWithAdminResource(bkk, UserConverter.toUserResource(davidk)))
+            .bodyValue(CompanyAndUserResource(bkk, UserConverter.toUserResource(davidk)))
             .exchange()
             .expectStatus().isCreated
-            .expectBody<CompanyWithAdminResource>()
+            .expectBody<CompanyAndUserResource>()
             .consumeWith {
-                val companyWithAdminResource = it.responseBody
-                Assertions.assertThat(companyWithAdminResource).isNotNull
-                if (companyWithAdminResource != null) {
-                    Assertions.assertThat(companyWithAdminResource.companyResource).isNotNull
-                    Assertions.assertThat(companyWithAdminResource.companyResource.code).isEqualTo(bkk.code)
-                    Assertions.assertThat(companyWithAdminResource.companyResource.name).isEqualTo(bkk.name)
-                    Assertions.assertThat(companyWithAdminResource.companyResource.email).isEqualTo(bkk.email)
+                val CompanyAndUserResource = it.responseBody
+                Assertions.assertThat(CompanyAndUserResource).isNotNull
+                if (CompanyAndUserResource != null) {
+                    Assertions.assertThat(CompanyAndUserResource.companyResource).isNotNull
+                    Assertions.assertThat(CompanyAndUserResource.companyResource.code).isEqualTo(bkk.code)
+                    Assertions.assertThat(CompanyAndUserResource.companyResource.name).isEqualTo(bkk.name)
+                    Assertions.assertThat(CompanyAndUserResource.companyResource.email).isEqualTo(bkk.email)
                 }
-                if (companyWithAdminResource != null) {
-                    if (companyWithAdminResource.userResource != null) {
-                        Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
-                        Assertions.assertThat(companyWithAdminResource.userResource !!.username)
+                if (CompanyAndUserResource != null) {
+                    if (CompanyAndUserResource.userResource != null) {
+                        Assertions.assertThat(CompanyAndUserResource.userResource).isNotNull
+                        Assertions.assertThat(CompanyAndUserResource.userResource !!.username)
                             .isEqualTo(davidk.username)
-                        Assertions.assertThat(companyWithAdminResource.userResource !!.email).isEqualTo(davidk.email)
-                        Assertions.assertThat(companyWithAdminResource.userResource !!.firstName)
+                        Assertions.assertThat(CompanyAndUserResource.userResource !!.email).isEqualTo(davidk.email)
+                        Assertions.assertThat(CompanyAndUserResource.userResource !!.firstName)
                             .isEqualTo(davidk.firstName)
                     }
                 }
@@ -336,21 +336,21 @@ class CompanyRouterMockedIntegrationTest(
             .header("API_VERSION", "V1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(CompanyWithAdminResource(bkk, UserConverter.toUserResource(davidk)))
+            .bodyValue(CompanyAndUserResource(bkk, UserConverter.toUserResource(davidk)))
             .exchange()
             .expectStatus().isOk
-            .expectBody<CompanyWithAdminResource>()
+            .expectBody<CompanyAndUserResource>()
             .consumeWith {
-                val companyWithAdminResource = it.responseBody
-                Assertions.assertThat(companyWithAdminResource).isNotNull
+                val CompanyAndUserResource = it.responseBody
+                Assertions.assertThat(CompanyAndUserResource).isNotNull
 
-                if (companyWithAdminResource?.userResource != null) {
-                    Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
-                    Assertions.assertThat(companyWithAdminResource.userResource !!.roles).isNotNull
-                    companyWithAdminResource.userResource !!.roles?.let { it1 ->
+                if (CompanyAndUserResource?.userResource != null) {
+                    Assertions.assertThat(CompanyAndUserResource.userResource).isNotNull
+                    Assertions.assertThat(CompanyAndUserResource.userResource !!.roles).isNotNull
+                    CompanyAndUserResource.userResource !!.roles?.let { it1 ->
                         Assertions.assertThat(it1.size).isEqualTo(2)
                     }
-                    Assertions.assertThat(companyWithAdminResource.userResource !!.roles).containsExactly(
+                    Assertions.assertThat(CompanyAndUserResource.userResource !!.roles).containsExactly(
                         CompanyRole(Roles.ROLE_SUPERADMIN, "system"),
                         CompanyRole(Roles.ROLE_ADMIN, "bkk")
                     )
@@ -395,21 +395,21 @@ class CompanyRouterMockedIntegrationTest(
             .header("API_VERSION", "V1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(CompanyWithAdminResource(bkk, UserConverter.toUserResource(davidk)))
+            .bodyValue(CompanyAndUserResource(bkk, UserConverter.toUserResource(davidk)))
             .exchange()
             .expectStatus().isOk
-            .expectBody<CompanyWithAdminResource>()
+            .expectBody<CompanyAndUserResource>()
             .consumeWith {
-                val companyWithAdminResource = it.responseBody
-                Assertions.assertThat(companyWithAdminResource).isNotNull
+                val CompanyAndUserResource = it.responseBody
+                Assertions.assertThat(CompanyAndUserResource).isNotNull
 
-                if (companyWithAdminResource?.userResource != null) {
-                    Assertions.assertThat(companyWithAdminResource.userResource).isNotNull
-                    Assertions.assertThat(companyWithAdminResource.userResource !!.roles).isNotNull
-                    companyWithAdminResource.userResource !!.roles?.let { it1 ->
+                if (CompanyAndUserResource?.userResource != null) {
+                    Assertions.assertThat(CompanyAndUserResource.userResource).isNotNull
+                    Assertions.assertThat(CompanyAndUserResource.userResource !!.roles).isNotNull
+                    CompanyAndUserResource.userResource !!.roles?.let { it1 ->
                         Assertions.assertThat(it1.size).isEqualTo(1)
                     }
-                    Assertions.assertThat(companyWithAdminResource.userResource !!.roles).containsExactly(
+                    Assertions.assertThat(CompanyAndUserResource.userResource !!.roles).containsExactly(
                         CompanyRole(Roles.ROLE_ADMIN, "bkk")
                     )
                 }
@@ -437,19 +437,19 @@ class CompanyRouterMockedIntegrationTest(
             .header("API_VERSION", "V1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(CompanyWithAdminResource(bkk, null))
+            .bodyValue(CompanyAndUserResource(bkk, null))
             .exchange()
             .expectStatus().isCreated
-            .expectBody<CompanyWithAdminResource>()
+            .expectBody<CompanyAndUserResource>()
             .consumeWith {
-                val companyWithAdminResource = it.responseBody
-                Assertions.assertThat(companyWithAdminResource).isNotNull
-                if (companyWithAdminResource != null) {
-                    Assertions.assertThat(companyWithAdminResource.companyResource).isNotNull
-                    Assertions.assertThat(companyWithAdminResource.userResource).isNull()
-                    Assertions.assertThat(companyWithAdminResource.companyResource.code).isEqualTo(bkk.code)
-                    Assertions.assertThat(companyWithAdminResource.companyResource.name).isEqualTo(bkk.name)
-                    Assertions.assertThat(companyWithAdminResource.companyResource.email).isEqualTo(bkk.email)
+                val CompanyAndUserResource = it.responseBody
+                Assertions.assertThat(CompanyAndUserResource).isNotNull
+                if (CompanyAndUserResource != null) {
+                    Assertions.assertThat(CompanyAndUserResource.companyResource).isNotNull
+                    Assertions.assertThat(CompanyAndUserResource.userResource).isNull()
+                    Assertions.assertThat(CompanyAndUserResource.companyResource.code).isEqualTo(bkk.code)
+                    Assertions.assertThat(CompanyAndUserResource.companyResource.name).isEqualTo(bkk.name)
+                    Assertions.assertThat(CompanyAndUserResource.companyResource.email).isEqualTo(bkk.email)
                     coVerify(exactly = 0) {
                         userRepository.findByUsername(any())
                     }

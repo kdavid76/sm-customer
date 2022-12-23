@@ -7,8 +7,8 @@ import com.bkk.sm.common.utils.CommonResourceTestUtils
 import com.bkk.sm.customers.config.RouterConfig
 import com.bkk.sm.customers.config.SecurityConfig
 import com.bkk.sm.customers.config.TestConfig
-import com.bkk.sm.customers.services.CompanyHandler
-import com.bkk.sm.customers.services.UserHandler
+import com.bkk.sm.customers.services.handlers.CompanyHandler
+import com.bkk.sm.customers.services.handlers.UserHandler
 import com.bkk.sm.customers.utils.TestUtils
 import com.bkk.sm.mongo.customers.converters.UserConverter
 import com.bkk.sm.mongo.customers.model.user.UserProfile

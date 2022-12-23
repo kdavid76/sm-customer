@@ -3,7 +3,6 @@ package com.bkk.sm.mongo.customers.model.user
 import com.bkk.sm.common.customer.company.CompanyRole
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.mongodb.lang.NonNull
-
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
@@ -55,7 +54,7 @@ data class UserProfile(
     fun isAccountNonExpired(): Boolean = accountExpiryTime?.after(Date.from(Instant.now())) ?: true
 
     @JsonIgnore
-    fun isPasswordNonExpired(): Boolean = passwordExpiryTime?.after(Date.from(Instant.now())) ?: true
+    fun isPasswordNonExpired(): Boolean = !passwordExpiringEnabled || passwordExpiryTime?.after(Date.from(Instant.now())) ?: true
 
     @JsonIgnore
     fun getGrantedAuthorities(): Collection<GrantedAuthority> {
@@ -65,6 +64,37 @@ data class UserProfile(
                 ?: mutableListOf()
         )
         return list
+    }
+
+    @JsonIgnore
+    fun isValid(): Boolean {
+        return enabled &&
+                !accountLocked &&
+                isPasswordNonExpired() &&
+                isAccountNonExpired() &&
+                username.isNotBlank() &&
+                firstName.isNotBlank() &&
+                lastName.isNotBlank() &&
+                email.isNotBlank() &&
+                password.isNotBlank()
+    }
+
+    @JsonIgnore
+    fun addCompanyRole(companyRole: CompanyRole) {
+        roles?.let {
+            if ( !hasCompanyRole(companyRole)) {
+                it.add(companyRole)
+            }
+        } ?: run {
+            roles = mutableListOf(companyRole)
+        }
+    }
+
+    @JsonIgnore
+    private fun hasCompanyRole(companyRole: CompanyRole): Boolean {
+        return !roles?.filter {
+            it.role == companyRole.role && it.companyCode == companyRole.companyCode
+        }.isNullOrEmpty()
     }
 
     override fun toString(): String = "UserBase[id=${id ?: ""}, username=$username, firstName=$firstName," +

@@ -1,7 +1,7 @@
 package com.bkk.sm.customers.config
 
-import com.bkk.sm.customers.services.CompanyHandler
-import com.bkk.sm.customers.services.UserHandler
+import com.bkk.sm.customers.services.handlers.CompanyHandler
+import com.bkk.sm.customers.services.handlers.UserHandler
 import mu.KotlinLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -53,13 +53,10 @@ class RouterConfig() {
                 it.header("API_VERSION")[0].equals("V1")
             }.nest {
                 GET("", companyHandler::findAll)
+                GET("/{companycode}", companyHandler::findByCompanyCode)
 
                 contentType(MediaType.APPLICATION_JSON).nest {
                     POST("", companyHandler::add)
-                }
-
-                "/{companycode}".nest {
-                    GET("", companyHandler::findByCompanyCode)
                 }
             }
         }
