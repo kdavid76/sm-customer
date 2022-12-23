@@ -1,6 +1,6 @@
 package com.bkk.sm.mongo.customers.model.company
 
-import com.bkk.sm.mongo.customers.model.Address
+import com.bkk.sm.common.model.Address
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
 
 @Document("companies")
-data class Company (
+data class Company(
     @Id
     var id: String?,
 
@@ -39,8 +39,8 @@ data class Company (
     var version: Long = 0
 ) {
     override fun toString(): String = "Company[id=${id ?: "N/A"}, code=$code}, name=$name, email=$email," +
-                " address=$address, taxId=${taxId?:""}, bankAccountNumber=${bankAccountNumber?:""}," +
-                "optionalContactInfo=${optionalContactInfo?:""}, activationToken=${activationToken?:""}," +
-                " activationTime=${activationTime?:""}, registrationTime=${registrationTime?:""}," +
-                " lastModificationTime=${lastModificationTime?:""}, enabled=${enabled?:""}, version=$version]"
+            " address=$address, taxId=${taxId ?: ""}, bankAccountNumber=${bankAccountNumber ?: ""}," +
+            "optionalContactInfo=${optionalContactInfo ?: ""}, activationToken=${activationToken ?: ""}," +
+            " activationTime=${activationTime ?: ""}, registrationTime=${registrationTime ?: ""}," +
+            " lastModificationTime=${lastModificationTime ?: ""}, enabled=${enabled ?: ""}, version=$version]"
 }

@@ -1,19 +1,21 @@
 package com.bkk.sm.customers
 
+import com.bkk.sm.common.customer.company.CompanyRole
+import com.bkk.sm.common.customer.resources.UserResource
+import com.bkk.sm.common.model.Roles
+import com.bkk.sm.common.utils.CommonResourceTestUtils
 import com.bkk.sm.customers.config.RouterConfig
 import com.bkk.sm.customers.config.SecurityConfig
 import com.bkk.sm.customers.config.TestConfig
-import com.bkk.sm.customers.services.CompanyHandler
-import com.bkk.sm.customers.services.UserHandler
+import com.bkk.sm.customers.services.handlers.CompanyHandler
+import com.bkk.sm.customers.services.handlers.UserHandler
 import com.bkk.sm.customers.utils.TestUtils
 import com.bkk.sm.mongo.customers.converters.UserConverter
-import com.bkk.sm.mongo.customers.model.Roles
-import com.bkk.sm.mongo.customers.model.company.CompanyRole
-import com.bkk.sm.mongo.customers.model.user.UserBase
+import com.bkk.sm.mongo.customers.model.user.UserProfile
 import com.bkk.sm.mongo.customers.repositories.CompanyRepository
 import com.bkk.sm.mongo.customers.repositories.UserRepository
-import com.bkk.sm.mongo.customers.resources.UserResource
 import com.ninjasquad.springmockk.MockkBean
+import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.slot
 import kotlinx.coroutines.flow.flow
@@ -31,8 +33,10 @@ import org.springframework.test.web.reactive.server.expectBody
 import java.time.Duration
 
 @WebFluxTest
-@Import(TestConfig::class, RouterConfig::class,
-    SecurityConfig::class, UserHandler::class, CompanyHandler::class)
+@Import(
+    TestConfig::class, RouterConfig::class,
+    SecurityConfig::class, UserHandler::class, CompanyHandler::class
+)
 @ActiveProfiles("test")
 class UserRouterMockedIntegrationTest(
     @Autowired var client: WebTestClient
@@ -43,18 +47,23 @@ class UserRouterMockedIntegrationTest(
     @MockkBean
     lateinit var companyRepository: CompanyRepository
 
-    val davidk = TestUtils.createUser("123456789", "davidk",
+    val davidk = TestUtils.createUserProfile(
+        "123456789", "davidk",
         "Krisztian", "David", "my@email.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")))
-    val bkkadmin = TestUtils.createUser("987654", "bkkadmin",
+        mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+    )
+    val bkkadmin = TestUtils.createUserProfile(
+        "987654", "bkkadmin",
         "Mike", "Hammer", "my@email.com",
-            mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system")))
+        mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system"))
+    )
 
     @BeforeEach
     fun initialize() {
         client = client.mutate()
             .responseTimeout(Duration.ofMinutes(10))
             .build()
+        clearMocks(userRepository, companyRepository)
     }
 
     @Test
@@ -121,7 +130,7 @@ class UserRouterMockedIntegrationTest(
             null
         }
 
-        val user = slot<UserBase>()
+        val user = slot<UserProfile>()
         coEvery {
             userRepository.save(capture(user))
         } answers {
@@ -147,16 +156,18 @@ class UserRouterMockedIntegrationTest(
             null
         }
 
-        val user = slot<UserBase>()
+        val user = slot<UserProfile>()
         coEvery {
             userRepository.save(capture(user))
         } answers {
             user.captured
         }
 
-        val dkResource = TestUtils.createUserResource("123456789", " ", "wwww",
+        val dkResource = CommonResourceTestUtils.createUserResource(
+            "123456789", " ", "wwww",
             "Krisztian", "David", "myemail.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")))
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+        )
 
         client
             .post()
@@ -178,16 +189,18 @@ class UserRouterMockedIntegrationTest(
             null
         }
 
-        val user = slot<UserBase>()
+        val user = slot<UserProfile>()
         coEvery {
             userRepository.save(capture(user))
         } answers {
             user.captured
         }
 
-        val dkResource = TestUtils.createUserResource("123456789", "davidk", "Jamcsa1?",
+        val dkResource = CommonResourceTestUtils.createUserResource(
+            "123456789", "davidk", "Jamcsa1?",
             "Krisztian", "David", "my@email.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")))
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+        )
 
         client
             .post()
@@ -214,11 +227,20 @@ class UserRouterMockedIntegrationTest(
         coEvery {
             userRepository.findByUsername(capture(username))
         } answers {
-            TestUtils.createUser("11111111", "bkkadmin", "Beszterce", "KK", "bkk@bkk.com", mutableListOf(CompanyRole(Roles.ROLE_USER, "bkk")))
+            TestUtils.createUserProfile(
+                "11111111",
+                "bkkadmin",
+                "Beszterce",
+                "KK",
+                "bkk@bkk.com",
+                mutableListOf(CompanyRole(Roles.ROLE_USER, "bkk"))
+            )
         }
-        val dkResource = TestUtils.createUserResource("123456789", "davidk", "Jamcsa1?",
+        val dkResource = CommonResourceTestUtils.createUserResource(
+            "123456789", "davidk", "Jamcsa1?",
             "Krisztian", "David", "my@email.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")))
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+        )
 
         client
             .post()

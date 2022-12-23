@@ -16,11 +16,21 @@
         <!-- PROJECT -->
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
-            <artifactId>data-access</artifactId>
+            <artifactId>customer-data-access</artifactId>
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.sportmanagement.bkk</groupId>
+            <artifactId>common-models</artifactId>
+        </dependency>
+
         <!-- SPRING -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -34,6 +44,11 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
         <!-- KOTLIN -->
@@ -80,6 +95,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.sportmanagement.bkk</groupId>
+            <artifactId>common-models</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
             <scope>test</scope>
@@ -114,6 +136,13 @@
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.kotest</groupId>
+            <artifactId>kotest-assertions-core-jvm</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -142,6 +171,10 @@
                         <version>${kotlin.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

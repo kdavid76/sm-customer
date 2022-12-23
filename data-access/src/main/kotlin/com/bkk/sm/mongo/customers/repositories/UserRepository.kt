@@ -1,10 +1,10 @@
 package com.bkk.sm.mongo.customers.repositories
 
-import com.bkk.sm.mongo.customers.model.user.UserBase
+import com.bkk.sm.mongo.customers.model.user.UserProfile
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserRepository : CoroutineCrudRepository<UserBase, String> {
-    suspend fun findByUsername(username: String): UserBase?
+interface UserRepository : CoroutineCrudRepository<UserProfile, String> {
+    suspend fun findByUsername(username: String): UserProfile?
 }

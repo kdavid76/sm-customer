@@ -1,12 +1,13 @@
 package com.bkk.sm.mongo.customers.converters
 
+import com.bkk.sm.common.customer.resources.CompanyResource
 import com.bkk.sm.mongo.customers.model.company.Company
-import com.bkk.sm.mongo.customers.resources.CompanyResource
 
 class CompanyConverter {
     companion object {
 
-        fun toCompanyResource(company: Company) = CompanyResource(id = company.id, code = company.code,
+        fun toCompanyResource(company: Company) = CompanyResource(
+            id = company.id, code = company.code,
             name = company.name, email = company.email, address = company.address, taxId = company.taxId,
             bankAccountNumber = company.bankAccountNumber, optionalContactInfo = company.optionalContactInfo,
             activationToken = company.activationToken, activationTime = company.activationTime,
@@ -14,7 +15,8 @@ class CompanyConverter {
             enabled = company.enabled, version = company.version
         )
 
-        fun toCompany(company: CompanyResource) = Company(id = company.id, code = company.code,
+        fun toCompany(company: CompanyResource) = Company(
+            id = company.id, code = company.code,
             name = company.name, email = company.email, address = company.address, taxId = company.taxId,
             bankAccountNumber = company.bankAccountNumber, optionalContactInfo = company.optionalContactInfo,
             activationToken = company.activationToken, activationTime = company.activationTime,
