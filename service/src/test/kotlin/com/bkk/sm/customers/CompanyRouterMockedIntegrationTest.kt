@@ -275,28 +275,24 @@ class CompanyRouterMockedIntegrationTest(
             .header("API_VERSION", "V1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(CompanyAndUserResource(bkk, UserConverter.toUserResource(davidk)))
+            .bodyValue(CompanyAndUserResource(bkk, UserConverter.toUserResource(davidk).copy(password = "PassWord_1")))
             .exchange()
             .expectStatus().isCreated
             .expectBody<CompanyAndUserResource>()
             .consumeWith {
-                val CompanyAndUserResource = it.responseBody
-                Assertions.assertThat(CompanyAndUserResource).isNotNull
-                if (CompanyAndUserResource != null) {
-                    Assertions.assertThat(CompanyAndUserResource.companyResource).isNotNull
-                    Assertions.assertThat(CompanyAndUserResource.companyResource.code).isEqualTo(bkk.code)
-                    Assertions.assertThat(CompanyAndUserResource.companyResource.name).isEqualTo(bkk.name)
-                    Assertions.assertThat(CompanyAndUserResource.companyResource.email).isEqualTo(bkk.email)
-                }
-                if (CompanyAndUserResource != null) {
-                    if (CompanyAndUserResource.userResource != null) {
-                        Assertions.assertThat(CompanyAndUserResource.userResource).isNotNull
-                        Assertions.assertThat(CompanyAndUserResource.userResource !!.username)
-                            .isEqualTo(davidk.username)
-                        Assertions.assertThat(CompanyAndUserResource.userResource !!.email).isEqualTo(davidk.email)
-                        Assertions.assertThat(CompanyAndUserResource.userResource !!.firstName)
-                            .isEqualTo(davidk.firstName)
-                    }
+                val companyAndUserResource = it.responseBody
+                Assertions.assertThat(companyAndUserResource).isNotNull
+                if (companyAndUserResource != null) {
+                    Assertions.assertThat(companyAndUserResource.companyResource).isNotNull
+                    Assertions.assertThat(companyAndUserResource.companyResource.code).isEqualTo(bkk.code)
+                    Assertions.assertThat(companyAndUserResource.companyResource.name).isEqualTo(bkk.name)
+                    Assertions.assertThat(companyAndUserResource.companyResource.email).isEqualTo(bkk.email)
+                    Assertions.assertThat(companyAndUserResource.userResource).isNotNull
+                    Assertions.assertThat(companyAndUserResource.userResource !!.username)
+                        .isEqualTo(davidk.username)
+                    Assertions.assertThat(companyAndUserResource.userResource !!.email).isEqualTo(davidk.email)
+                    Assertions.assertThat(companyAndUserResource.userResource !!.firstName)
+                        .isEqualTo(davidk.firstName)
                 }
             }
     }
