@@ -37,15 +37,4 @@ class UserHandler(
         log.error { "Registering user failed due to missing payload." }
         return ServerResponse.badRequest().buildAndAwait()
     }
-/*
-    private fun validateUserResource(userResource: UserResource?): Errors? {
-        if (userResource == null) {
-            return null
-        }
-        val errors: Errors = BeanPropertyBindingResult(userResource, UserResource::class.java.name)
-        userResourceValidator.validate(userResource, errors)
-
-        return errors
-    }
- */
 }
