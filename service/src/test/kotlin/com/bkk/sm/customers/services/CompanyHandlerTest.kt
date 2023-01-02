@@ -36,10 +36,17 @@ class CompanyHandlerTest {
         UUID.randomUUID().toString(), "bkk", "Beszterce KK",
         "besztercekk@email.com", "12345678-1-11", "11111111-22222222-33333333",
         "", LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true,
-        1, CommonResourceTestUtils.createAddress("Salgotarjan",
-            3100, "First Line", AreaType.KORUT, "11",
-            1, 1, null
-            )
+        1,
+        CommonResourceTestUtils.createAddress(
+            "Salgotarjan",
+            3100,
+            "First Line",
+            AreaType.KORUT,
+            "11",
+            1,
+            1,
+            null
+        )
     )
 
     @BeforeEach
@@ -84,15 +91,18 @@ class CompanyHandlerTest {
 
         // then
         response.statusCode() shouldBe HttpStatus.BAD_REQUEST
-        coVerify(exactly = 0) { companyService.registerCompany( any(), any()) }
+        coVerify(exactly = 0) { companyService.registerCompany(any(), any()) }
     }
 
     @Test
     fun `Add company`(): Unit = runBlocking {
         // given
         val davidk = TestUtils.createUserProfile(
-            "123456789", "davidk",
-            "Krisztian", "David", "my@email.com",
+            "123456789",
+            "davidk",
+            "Krisztian",
+            "David",
+            "my@email.com",
             mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode"))
         )
         val company = CompanyConverter.toCompanyResource(bkk)

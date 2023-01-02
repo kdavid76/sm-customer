@@ -14,7 +14,6 @@ import org.springframework.data.mongodb.core.convert.MappingMongoConverter
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories
 import java.util.*
 
-
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = ["com.bkk.sm.mongo.customers.repositories"])
 class CustomersMongoConfig : AbstractReactiveMongoConfiguration() {

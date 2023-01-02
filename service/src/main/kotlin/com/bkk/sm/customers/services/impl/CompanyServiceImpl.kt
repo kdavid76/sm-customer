@@ -66,16 +66,17 @@ class CompanyServiceImpl(
         val companyErrors = validateCompany(companyResource)
         val userErrors = userResource?.let {
             validateUser(it)
-        } ?:  BeanPropertyBindingResult(null, UserResource::class.java.name)
+        } ?: BeanPropertyBindingResult(null, UserResource::class.java.name)
 
         if (companyErrors.hasErrors() || userErrors.hasErrors()) {
-            log.error { "Invalid payload, companyErrors=${companyErrors} and userErrors=${userErrors} were found in request body" }
+            log.error { "Invalid payload, companyErrors=$companyErrors and userErrors=$userErrors were found in request body" }
             return ServerResponse.badRequest().bodyValueAndAwait(
                 FormErrorResource.Builder()
-                .objectName(CompanyAndUserResource::class.java.name)
-                .addFieldErrors(companyErrors)
-                .addFieldErrors(userErrors)
-                .build())
+                    .objectName(CompanyAndUserResource::class.java.name)
+                    .addFieldErrors(companyErrors)
+                    .addFieldErrors(userErrors)
+                    .build()
+            )
         }
 
         val company = companyRepository.findByCode(companyResource.code)
@@ -85,25 +86,26 @@ class CompanyServiceImpl(
         }
 
         val saved = companyRepository.save(CompanyConverter.toCompany(companyResource))
-        log.info { "Successfully saved company=${saved}" }
+        log.info { "Successfully saved company=$saved" }
 
         var user: UserProfile? = null
         userResource?.let {
             user = userRepository.findByUsername(it.username)
-            if (user == null){
+            if (user == null) {
                 if (userResource.password == null) {
                     userErrors.rejectValue("password", "errors.user.resource.password.missing")
                     return ServerResponse.badRequest().bodyValueAndAwait(
                         FormErrorResource.Builder()
                             .objectName(CompanyAndUserResource::class.java.name)
                             .addFieldErrors(userErrors)
-                            .build())
+                            .build()
+                    )
                 }
                 user = UserConverter.toUserBase(userResource)
                 user!!.accountLocked = true
                 user!!.enabled = false
-                user!!.registrationTime =  Date.from(Instant.now())
-                user!!.lastModificationTime =  Date.from(Instant.now())
+                user!!.registrationTime = Date.from(Instant.now())
+                user!!.lastModificationTime = Date.from(Instant.now())
                 user!!.passwordExpiryTime = Date.from(Instant.now().plus(90, ChronoUnit.DAYS))
                 user!!.passwordExpiringEnabled = true
                 user!!.activationKey = RandomStringUtils.randomAlphanumeric(32)
@@ -115,10 +117,9 @@ class CompanyServiceImpl(
         return ServerResponse.status(HttpStatus.CREATED).bodyValueAndAwait(
             CompanyAndUserResource(
                 CompanyConverter.toCompanyResource(saved),
-                if (user == null) null else UserConverter.toUserResource(user !!)
+                if (user == null) null else UserConverter.toUserResource(user!!)
             )
         )
-
     }
 
     private suspend fun validateUser(userResource: UserResource): Errors {
@@ -129,7 +130,7 @@ class CompanyServiceImpl(
 
     private suspend fun validateCompany(companyResource: CompanyResource): Errors {
         val errors: Errors = BeanPropertyBindingResult(companyResource, CompanyResource::class.java.name)
-        companyResourceValidator.validate(companyResource,errors)
+        companyResourceValidator.validate(companyResource, errors)
         return errors
     }
 

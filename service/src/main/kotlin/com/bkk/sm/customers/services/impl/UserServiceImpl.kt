@@ -53,12 +53,13 @@ class UserServiceImpl(
     override suspend fun registerUser(userResource: UserResource): ServerResponse {
         val errors = validateUser(userResource)
         if (errors.hasErrors()) {
-            log.error { "Invalid payload, errors=${errors} were found in request body" }
+            log.error { "Invalid payload, errors=$errors were found in request body" }
             return ServerResponse.badRequest().bodyValueAndAwait(
                 FormErrorResource.Builder()
                     .objectName(UserResource::class.java.name)
                     .addFieldErrors(errors)
-                    .build())
+                    .build()
+            )
         }
 
         val user = userRepository.findByUsername(userResource.username)

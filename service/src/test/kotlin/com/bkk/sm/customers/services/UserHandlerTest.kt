@@ -70,15 +70,18 @@ class UserHandlerTest {
 
         // then
         response.statusCode() shouldBe HttpStatus.BAD_REQUEST
-        coVerify(exactly = 0) { userService.registerUser( any()) }
+        coVerify(exactly = 0) { userService.registerUser(any()) }
     }
 
     @Test
     fun `Registering user`(): Unit = runBlocking {
         // given
         val davidk = TestUtils.createUserProfile(
-            "123456789", "davidk",
-            "Krisztian", "David", "my@email.com",
+            "123456789",
+            "davidk",
+            "Krisztian",
+            "David",
+            "my@email.com",
             mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
         )
         val request = MockServerRequest.builder().body(Mono.just(UserConverter.toUserResource(davidk)))
@@ -89,7 +92,7 @@ class UserHandlerTest {
 
         // then
         response.statusCode() shouldBe HttpStatus.CREATED
-        coVerify { userService.registerUser( any()) }
+        coVerify { userService.registerUser(any()) }
     }
 
 /*

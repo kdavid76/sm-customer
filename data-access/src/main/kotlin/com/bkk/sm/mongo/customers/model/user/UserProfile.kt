@@ -48,7 +48,7 @@ data class UserProfile(
     var activatedTime: Date? = null,
     var accountLocked: Boolean = true,
     var enabled: Boolean = false,
-    var middleName: String? = null,
+    var middleName: String? = null
 ) {
     @JsonIgnore
     fun isAccountNonExpired(): Boolean = accountExpiryTime?.after(Date.from(Instant.now())) ?: true
@@ -69,20 +69,20 @@ data class UserProfile(
     @JsonIgnore
     fun isValid(): Boolean {
         return enabled &&
-                !accountLocked &&
-                isPasswordNonExpired() &&
-                isAccountNonExpired() &&
-                username.isNotBlank() &&
-                firstName.isNotBlank() &&
-                lastName.isNotBlank() &&
-                email.isNotBlank() &&
-                password.isNotBlank()
+            !accountLocked &&
+            isPasswordNonExpired() &&
+            isAccountNonExpired() &&
+            username.isNotBlank() &&
+            firstName.isNotBlank() &&
+            lastName.isNotBlank() &&
+            email.isNotBlank() &&
+            password.isNotBlank()
     }
 
     @JsonIgnore
     fun addCompanyRole(companyRole: CompanyRole) {
         roles?.let {
-            if ( !hasCompanyRole(companyRole)) {
+            if (!hasCompanyRole(companyRole)) {
                 it.add(companyRole)
             }
         } ?: run {
@@ -98,10 +98,9 @@ data class UserProfile(
     }
 
     override fun toString(): String = "UserBase[id=${id ?: ""}, username=$username, firstName=$firstName," +
-            " middleName=${middleName ?: ""}, lastName=$lastName, email=$email, failedLoginAttempts=${failedLoginAttempts ?: ""}," +
-            " accountLocked=${accountLocked}, passwordExpiringEnabled=${passwordExpiringEnabled}," +
-            " enabled=$enabled, registrationTime=${registrationTime ?: ""}, activatedTime=${activatedTime ?: ""}," +
-            " lastModificationTime=${lastModificationTime ?: ""}, passwordExpiryTime=${passwordExpiryTime ?: ""}," +
-            " accountExpiryTime=${accountExpiryTime ?: ""}, activationKey=${activationKey ?: ""}, version=$version]"
-
+        " middleName=${middleName ?: ""}, lastName=$lastName, email=$email, failedLoginAttempts=${failedLoginAttempts ?: ""}," +
+        " accountLocked=$accountLocked, passwordExpiringEnabled=$passwordExpiringEnabled," +
+        " enabled=$enabled, registrationTime=${registrationTime ?: ""}, activatedTime=${activatedTime ?: ""}," +
+        " lastModificationTime=${lastModificationTime ?: ""}, passwordExpiryTime=${passwordExpiryTime ?: ""}," +
+        " accountExpiryTime=${accountExpiryTime ?: ""}, activationKey=${activationKey ?: ""}, version=$version]"
 }

@@ -41,7 +41,7 @@ class CompanyServiceImplTest {
     private val companyRepository = mockk<CompanyRepository>()
     private val userResourceValidator = mockk<UserResourceValidator>()
     private val companyResourceValidator = mockk<CompanyResourceValidator>()
-    private val passwordEncoder= mockk<PasswordEncoder>()
+    private val passwordEncoder = mockk<PasswordEncoder>()
 
     private val impl = CompanyServiceImpl(userResourceValidator, companyResourceValidator, companyRepository, userRepository, passwordEncoder)
 
@@ -49,18 +49,32 @@ class CompanyServiceImplTest {
         UUID.randomUUID().toString(), "bkk", "Beszterce KK",
         "besztercekk@email.com", "12345678-1-11", "11111111-22222222-33333333",
         "", LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true,
-        1, CommonResourceTestUtils.createAddress("Salgotarjan",
-            3100, "First Line", AreaType.KORUT, "11",
-            1, 1, null
+        1,
+        CommonResourceTestUtils.createAddress(
+            "Salgotarjan",
+            3100,
+            "First Line",
+            AreaType.KORUT,
+            "11",
+            1,
+            1,
+            null
         )
     )
     private val skse = TestUtils.createCompany(
         UUID.randomUUID().toString(), "skse", "Salgotarjani KSE",
         "skse@email.com", "87654321-2-22", "44444444-55555555-66666666",
         "", LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true,
-        1, CommonResourceTestUtils.createAddress("Salgotarjan",
-            3100, "Martirok", AreaType.UT, "18",
-            1, 1, null
+        1,
+        CommonResourceTestUtils.createAddress(
+            "Salgotarjan",
+            3100,
+            "Martirok",
+            AreaType.UT,
+            "18",
+            1,
+            1,
+            null
         )
     )
 
@@ -141,20 +155,22 @@ class CompanyServiceImplTest {
     fun `Invalid payload while adding new company user`() = runBlocking {
         // given
         val davidk = TestUtils.createUserProfile(
-            "123456789", "davidk",
-            "Krisztian", "David", "my@email.com",
+            "123456789",
+            "davidk",
+            "Krisztian",
+            "David",
+            "my@email.com",
             mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode"))
         )
         val companyResource = CompanyConverter.toCompanyResource(bkk).copy(name = "")
         val userResource = UserConverter.toUserResource(davidk).copy(firstName = "")
         val companyErrors = slot<Errors>()
-        coEvery { companyResourceValidator.validate(companyResource, capture(companyErrors)) }  answers {
+        coEvery { companyResourceValidator.validate(companyResource, capture(companyErrors)) } answers {
             companyErrors.captured
-            companyErrors.captured.rejectValue("name","error.test.name")
-
+            companyErrors.captured.rejectValue("name", "error.test.name")
         }
         val userErrors = slot<Errors>()
-        coEvery { userResourceValidator.validate(userResource, capture(userErrors)) }  answers {
+        coEvery { userResourceValidator.validate(userResource, capture(userErrors)) } answers {
             userErrors.captured
             userErrors.captured.rejectValue("firstName", "error.test.firstName")
         }
@@ -170,8 +186,11 @@ class CompanyServiceImplTest {
     fun `Add already existing company`() = runBlocking {
         // given
         val davidk = TestUtils.createUserProfile(
-            "123456789", "davidk",
-            "Krisztian", "David", "my@email.com",
+            "123456789",
+            "davidk",
+            "Krisztian",
+            "David",
+            "my@email.com",
             mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode"))
         )
         davidk.password = "somePassword"
@@ -181,11 +200,11 @@ class CompanyServiceImplTest {
             bkk
         }
         val companyErrors = slot<Errors>()
-        coEvery { companyResourceValidator.validate(companyResource, capture(companyErrors)) }  answers {
+        coEvery { companyResourceValidator.validate(companyResource, capture(companyErrors)) } answers {
             companyErrors.captured
         }
         val userErrors = slot<Errors>()
-        coEvery { userResourceValidator.validate(userResource, capture(userErrors)) }  answers {
+        coEvery { userResourceValidator.validate(userResource, capture(userErrors)) } answers {
             userErrors.captured
         }
 
@@ -200,8 +219,11 @@ class CompanyServiceImplTest {
     fun `Add company with user`(): Unit = runBlocking {
         // given
         val davidk = TestUtils.createUserProfile(
-            "123456789", "davidk",
-            "Krisztian", "David", "my@email.com",
+            "123456789",
+            "davidk",
+            "Krisztian",
+            "David",
+            "my@email.com",
             mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode"))
         )
         val companyResource = CompanyConverter.toCompanyResource(bkk)
@@ -220,11 +242,11 @@ class CompanyServiceImplTest {
             up.captured
         }
         val companyErrors = slot<Errors>()
-        coEvery { companyResourceValidator.validate(companyResource, capture(companyErrors)) }  answers {
+        coEvery { companyResourceValidator.validate(companyResource, capture(companyErrors)) } answers {
             companyErrors.captured
         }
         val userErrors = slot<Errors>()
-        coEvery { userResourceValidator.validate(userResource, capture(userErrors)) }  answers {
+        coEvery { userResourceValidator.validate(userResource, capture(userErrors)) } answers {
             userErrors.captured
         }
 
@@ -247,15 +269,19 @@ class CompanyServiceImplTest {
         result.userResource shouldNotBe null
         result.userResource?.roles shouldNotBe null
         (result.userResource?.roles?.size ?: 0) shouldBe 2
-        result.userResource?.roles !! shouldContain CompanyRole(Roles.ROLE_ADMIN, "bkk")
+        result.userResource?.roles!! shouldContain CompanyRole(Roles.ROLE_ADMIN, "bkk")
     }
 
     @Test
     fun `Add company with user who does not exist`(): Unit = runBlocking {
         // given
         val davidk = TestUtils.createUserProfile(
-            "123456789", "davidk",
-            "Krisztian", "David", "my@email.com", null
+            "123456789",
+            "davidk",
+            "Krisztian",
+            "David",
+            "my@email.com",
+            null
         )
         davidk.password = "password"
         val companyResource = CompanyConverter.toCompanyResource(bkk)
@@ -270,11 +296,11 @@ class CompanyServiceImplTest {
             null
         }
         val companyErrors = slot<Errors>()
-        coEvery { companyResourceValidator.validate(companyResource, capture(companyErrors)) }  answers {
+        coEvery { companyResourceValidator.validate(companyResource, capture(companyErrors)) } answers {
             companyErrors.captured
         }
         val userErrors = slot<Errors>()
-        coEvery { userResourceValidator.validate(userResource, capture(userErrors)) }  answers {
+        coEvery { userResourceValidator.validate(userResource, capture(userErrors)) } answers {
             userErrors.captured
         }
         val up = slot<UserProfile>()
@@ -302,7 +328,7 @@ class CompanyServiceImplTest {
         result.userResource shouldNotBe null
         result.userResource?.roles shouldNotBe null
         (result.userResource?.roles?.size ?: 0) shouldBe 1
-        result.userResource?.roles !! shouldContain CompanyRole(Roles.ROLE_ADMIN, "bkk")
+        result.userResource?.roles!! shouldContain CompanyRole(Roles.ROLE_ADMIN, "bkk")
     }
 
     @Test
@@ -316,7 +342,7 @@ class CompanyServiceImplTest {
             bkk
         }
         val companyErrors = slot<Errors>()
-        coEvery { companyResourceValidator.validate(companyResource, capture(companyErrors)) }  answers {
+        coEvery { companyResourceValidator.validate(companyResource, capture(companyErrors)) } answers {
             companyErrors.captured
         }
 

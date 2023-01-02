@@ -36,5 +36,4 @@ class CompanyHandler(
         log.error { "Registering company failed due to missing payload." }
         return ServerResponse.badRequest().buildAndAwait()
     }
-
 }

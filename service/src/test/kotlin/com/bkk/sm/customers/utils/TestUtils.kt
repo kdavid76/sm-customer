@@ -42,8 +42,12 @@ class TestUtils {
             email: String,
             roles: MutableList<CompanyRole>?
         ) = UserProfile(
-            id = id, username = username, firstName = firstName, lastName = lastName,
-            email = email, roles = roles
+            id = id,
+            username = username,
+            firstName = firstName,
+            lastName = lastName,
+            email = email,
+            roles = roles
         )
 
         fun createCompany(

@@ -34,8 +34,11 @@ import java.time.Duration
 
 @WebFluxTest
 @Import(
-    TestConfig::class, RouterConfig::class,
-    SecurityConfig::class, UserHandler::class, CompanyHandler::class
+    TestConfig::class,
+    RouterConfig::class,
+    SecurityConfig::class,
+    UserHandler::class,
+    CompanyHandler::class
 )
 @ActiveProfiles("test")
 class UserRouterMockedIntegrationTest(
@@ -48,13 +51,19 @@ class UserRouterMockedIntegrationTest(
     lateinit var companyRepository: CompanyRepository
 
     val davidk = TestUtils.createUserProfile(
-        "123456789", "davidk",
-        "Krisztian", "David", "my@email.com",
+        "123456789",
+        "davidk",
+        "Krisztian",
+        "David",
+        "my@email.com",
         mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
     )
     val bkkadmin = TestUtils.createUserProfile(
-        "987654", "bkkadmin",
-        "Mike", "Hammer", "my@email.com",
+        "987654",
+        "bkkadmin",
+        "Mike",
+        "Hammer",
+        "my@email.com",
         mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system"))
     )
 
@@ -164,8 +173,12 @@ class UserRouterMockedIntegrationTest(
         }
 
         val dkResource = CommonResourceTestUtils.createUserResource(
-            "123456789", " ", "wwww",
-            "Krisztian", "David", "myemail.com",
+            "123456789",
+            " ",
+            "wwww",
+            "Krisztian",
+            "David",
+            "myemail.com",
             mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
         )
 
@@ -197,8 +210,12 @@ class UserRouterMockedIntegrationTest(
         }
 
         val dkResource = CommonResourceTestUtils.createUserResource(
-            "123456789", "davidk", "Jamcsa1?",
-            "Krisztian", "David", "my@email.com",
+            "123456789",
+            "davidk",
+            "Jamcsa1?",
+            "Krisztian",
+            "David",
+            "my@email.com",
             mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
         )
 
@@ -237,8 +254,12 @@ class UserRouterMockedIntegrationTest(
             )
         }
         val dkResource = CommonResourceTestUtils.createUserResource(
-            "123456789", "davidk", "Jamcsa1?",
-            "Krisztian", "David", "my@email.com",
+            "123456789",
+            "davidk",
+            "Jamcsa1?",
+            "Krisztian",
+            "David",
+            "my@email.com",
             mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
         )
 

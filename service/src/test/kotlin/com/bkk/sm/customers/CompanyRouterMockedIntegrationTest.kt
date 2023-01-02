@@ -40,8 +40,11 @@ import java.time.LocalDateTime
 
 @WebFluxTest
 @Import(
-    TestConfig::class, RouterConfig::class,
-    SecurityConfig::class, UserHandler::class, CompanyHandler::class
+    TestConfig::class,
+    RouterConfig::class,
+    SecurityConfig::class,
+    UserHandler::class,
+    CompanyHandler::class
 )
 @ActiveProfiles("test")
 class CompanyRouterMockedIntegrationTest(
@@ -54,13 +57,19 @@ class CompanyRouterMockedIntegrationTest(
     lateinit var companyRepository: CompanyRepository
 
     val davidk = TestUtils.createUserProfile(
-        "123456789", "davidk",
-        "Krisztian", "David", "my@email.com",
+        "123456789",
+        "davidk",
+        "Krisztian",
+        "David",
+        "my@email.com",
         mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
     )
     val bkkadmin = TestUtils.createUserProfile(
-        "987654", "bkkadmin",
-        "Mike", "Hammer", "my@email.com",
+        "987654",
+        "bkkadmin",
+        "Mike",
+        "Hammer",
+        "my@email.com",
         mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system"))
     )
     private val bkk = CommonResourceTestUtils.createCompanyResource(
@@ -71,20 +80,28 @@ class CompanyRouterMockedIntegrationTest(
             "Salgotarjan",
             3100,
             "Medves",
-             AreaType.KORUT,
+            AreaType.KORUT,
             "86",
             7,
             40,
-            null)
+            null
+        )
     )
     private val apple = TestUtils.createCompany(
         null, "apple", "Apple",
         "info@apple.com", null, null, "",
         LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true, 1,
-        CommonResourceTestUtils.createAddress("Salgotarjan", 3100, "Medves",
-                                AreaType.KORUT, "86", 7, 40, null)
+        CommonResourceTestUtils.createAddress(
+            "Salgotarjan",
+            3100,
+            "Medves",
+            AreaType.KORUT,
+            "86",
+            7,
+            40,
+            null
+        )
     )
-
 
     @BeforeEach
     fun initialize() {
@@ -231,14 +248,13 @@ class CompanyRouterMockedIntegrationTest(
                 }
                 if (CompanyAndUserResource?.userResource != null) {
                     Assertions.assertThat(CompanyAndUserResource.userResource).isNotNull
-                    Assertions.assertThat(CompanyAndUserResource.userResource !!.username).isEqualTo(davidk.username)
-                    Assertions.assertThat(CompanyAndUserResource.userResource !!.email).isEqualTo(davidk.email)
-                    Assertions.assertThat(CompanyAndUserResource.userResource !!.firstName)
+                    Assertions.assertThat(CompanyAndUserResource.userResource!!.username).isEqualTo(davidk.username)
+                    Assertions.assertThat(CompanyAndUserResource.userResource!!.email).isEqualTo(davidk.email)
+                    Assertions.assertThat(CompanyAndUserResource.userResource!!.firstName)
                         .isEqualTo(davidk.firstName)
                 }
             }
     }
-
 
     @Test
     fun `Add company with not pre-existing user`() {
@@ -288,16 +304,16 @@ class CompanyRouterMockedIntegrationTest(
                     Assertions.assertThat(companyAndUserResource.companyResource.name).isEqualTo(bkk.name)
                     Assertions.assertThat(companyAndUserResource.companyResource.email).isEqualTo(bkk.email)
                     Assertions.assertThat(companyAndUserResource.userResource).isNotNull
-                    Assertions.assertThat(companyAndUserResource.userResource !!.username)
+                    Assertions.assertThat(companyAndUserResource.userResource!!.username)
                         .isEqualTo(davidk.username)
-                    Assertions.assertThat(companyAndUserResource.userResource !!.email).isEqualTo(davidk.email)
-                    Assertions.assertThat(companyAndUserResource.userResource !!.firstName)
+                    Assertions.assertThat(companyAndUserResource.userResource!!.email).isEqualTo(davidk.email)
+                    Assertions.assertThat(companyAndUserResource.userResource!!.firstName)
                         .isEqualTo(davidk.firstName)
                 }
             }
     }
 
-    //@Test
+    // @Test
     fun `Multiple company admin nominations for user`() {
         coEvery {
             companyRepository.findByCode(bkk.code)
@@ -342,11 +358,11 @@ class CompanyRouterMockedIntegrationTest(
 
                 if (CompanyAndUserResource?.userResource != null) {
                     Assertions.assertThat(CompanyAndUserResource.userResource).isNotNull
-                    Assertions.assertThat(CompanyAndUserResource.userResource !!.roles).isNotNull
-                    CompanyAndUserResource.userResource !!.roles?.let { it1 ->
+                    Assertions.assertThat(CompanyAndUserResource.userResource!!.roles).isNotNull
+                    CompanyAndUserResource.userResource!!.roles?.let { it1 ->
                         Assertions.assertThat(it1.size).isEqualTo(2)
                     }
-                    Assertions.assertThat(CompanyAndUserResource.userResource !!.roles).containsExactly(
+                    Assertions.assertThat(CompanyAndUserResource.userResource!!.roles).containsExactly(
                         CompanyRole(Roles.ROLE_SUPERADMIN, "system"),
                         CompanyRole(Roles.ROLE_ADMIN, "bkk")
                     )
@@ -354,7 +370,7 @@ class CompanyRouterMockedIntegrationTest(
             }
     }
 
-    //@Test
+    // @Test
     fun `Nominate user for company admin`() {
         coEvery {
             companyRepository.findByCode(bkk.code)
@@ -401,11 +417,11 @@ class CompanyRouterMockedIntegrationTest(
 
                 if (CompanyAndUserResource?.userResource != null) {
                     Assertions.assertThat(CompanyAndUserResource.userResource).isNotNull
-                    Assertions.assertThat(CompanyAndUserResource.userResource !!.roles).isNotNull
-                    CompanyAndUserResource.userResource !!.roles?.let { it1 ->
+                    Assertions.assertThat(CompanyAndUserResource.userResource!!.roles).isNotNull
+                    CompanyAndUserResource.userResource!!.roles?.let { it1 ->
                         Assertions.assertThat(it1.size).isEqualTo(1)
                     }
-                    Assertions.assertThat(CompanyAndUserResource.userResource !!.roles).containsExactly(
+                    Assertions.assertThat(CompanyAndUserResource.userResource!!.roles).containsExactly(
                         CompanyRole(Roles.ROLE_ADMIN, "bkk")
                     )
                 }

@@ -22,7 +22,7 @@ class UserHandler(
 
     suspend fun findByUsername(request: ServerRequest): ServerResponse {
         val username = request.pathVariable("username")
-        log.info { "Finding user by username=${username}" }
+        log.info { "Finding user by username=$username" }
         return userService.findUserByUsername(username)
     }
 
@@ -30,7 +30,7 @@ class UserHandler(
         val userResource = request.awaitBodyOrNull<UserResource>()
 
         userResource?.let {
-            log.info { "Registering user=${userResource}" }
+            log.info { "Registering user=$userResource" }
             return userService.registerUser(userResource)
         }
 

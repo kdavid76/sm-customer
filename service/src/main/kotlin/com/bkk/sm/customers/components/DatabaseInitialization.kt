@@ -25,9 +25,7 @@ class DatabaseInitialization(
 
     @EventListener(value = [ApplicationReadyEvent::class])
     fun init() {
-
         val username = userProperties.getProperty("username")
-
 
         runBlocking {
             launch {

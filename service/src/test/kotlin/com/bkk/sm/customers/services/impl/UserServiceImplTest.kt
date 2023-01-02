@@ -29,17 +29,22 @@ class UserServiceImplTest {
     private val userResourceValidator = mockk<UserResourceValidator>()
     private val passwordEncoder = mockk<PasswordEncoder>()
 
-
     private val impl = UserServiceImpl(userRepository, userResourceValidator, passwordEncoder)
 
     private val davidk = TestUtils.createUserProfile(
-        "123456789", "davidk",
-        "Krisztian", "David", "my@email.com",
+        "123456789",
+        "davidk",
+        "Krisztian",
+        "David",
+        "my@email.com",
         mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
     )
     private val bkkadmin = TestUtils.createUserProfile(
-        "987654", "bkkadmin",
-        "Mike", "Hammer", "my@email.com",
+        "987654",
+        "bkkadmin",
+        "Mike",
+        "Hammer",
+        "my@email.com",
         mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system"))
     )
 
@@ -54,16 +59,16 @@ class UserServiceImplTest {
         // when
         val response = impl.findAllUsers()
 
-        response.statusCode() shouldBe  HttpStatus.OK
+        response.statusCode() shouldBe HttpStatus.OK
         val responseString = TestUtils.getResponseString(response)
-        responseString shouldNotBe  null
+        responseString shouldNotBe null
 
         val mapper = jacksonObjectMapper()
         val typeFactory = mapper.typeFactory
         val collectionType = typeFactory.constructCollectionType(ArrayList::class.java, UserResource::class.java)
         val resultList = mapper.readValue<List<UserResource>>(responseString, collectionType)
         resultList shouldNotBe null
-        resultList shouldContain  UserConverter.toUserResource(davidk)
+        resultList shouldContain UserConverter.toUserResource(davidk)
         resultList shouldContain UserConverter.toUserResource(bkkadmin)
     }
 
@@ -146,7 +151,7 @@ class UserServiceImplTest {
         coEvery { userRepository.findByUsername(user.username) } answers { null }
         coEvery { userRepository.save(any()) } answers { bkkadmin }
         coEvery { passwordEncoder.encode(any()) } answers { "password" }
-        coEvery { userResourceValidator.validate(any(), any()) }  returns Unit
+        coEvery { userResourceValidator.validate(any(), any()) } returns Unit
 
         // when
         val response = impl.registerUser(user)

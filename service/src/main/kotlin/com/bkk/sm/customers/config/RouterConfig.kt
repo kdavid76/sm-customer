@@ -42,7 +42,7 @@ class RouterConfig() {
         before {
             log.info {
                 "Processing Company request from ${
-                    it.remoteAddress().orElse(null)
+                it.remoteAddress().orElse(null)
                 } with headers=${it.headers()}"
             }
             it
@@ -60,6 +60,5 @@ class RouterConfig() {
                 }
             }
         }
-
     }
 }

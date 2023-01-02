@@ -28,5 +28,5 @@ class TestConfig {
 
     @Bean
     fun companyService(userRepository: UserRepository, companyRepository: CompanyRepository, passwordEncoder: PasswordEncoder):
-            CompanyService = CompanyServiceImpl(userResourceValidator(), companyResourceValidator(), companyRepository, userRepository, passwordEncoder)
+        CompanyService = CompanyServiceImpl(userResourceValidator(), companyResourceValidator(), companyRepository, userRepository, passwordEncoder)
 }
