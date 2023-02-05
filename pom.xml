@@ -29,7 +29,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.sportmanagement.bkk</groupId>
-                <artifactId>common-models</artifactId>
+                <artifactId>sm-common-models</artifactId>
                 <version>${sm-commons.version}</version>
                 <exclusions>
                     <exclusion>
@@ -42,7 +42,7 @@
             <!-- TEST -->
             <dependency>
                 <groupId>com.sportmanagement.bkk</groupId>
-                <artifactId>common-models</artifactId>
+                <artifactId>sm-common-models</artifactId>
                 <version>${sm-commons.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>

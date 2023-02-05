@@ -27,7 +27,7 @@
         <!-- SM PROJECT -->
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
-            <artifactId>common-models</artifactId>
+            <artifactId>sm-common-models</artifactId>
         </dependency>
 
         <!-- KOTLIN -->

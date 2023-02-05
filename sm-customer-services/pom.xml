@@ -16,13 +16,13 @@
         <!-- PROJECT -->
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
-            <artifactId>customer-data-access</artifactId>
+            <artifactId>sm-customer-data-access</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
-            <artifactId>common-models</artifactId>
+            <artifactId>sm-common-models</artifactId>
         </dependency>
 
         <!-- SPRING -->
@@ -96,7 +96,7 @@
 
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
-            <artifactId>common-models</artifactId>
+            <artifactId>sm-common-models</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
