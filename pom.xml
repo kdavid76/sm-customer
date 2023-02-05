@@ -17,8 +17,8 @@
     <description>Demo project for Spring Boot</description>
 
     <modules>
-        <module>service</module>
-        <module>data-access</module>
+        <module>sm-customer-services</module>
+        <module>sm-customer-data-access</module>
     </modules>
 
     <properties>
