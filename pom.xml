@@ -80,6 +80,12 @@
         </pluginManagement>
     </build>
 
+    <scm>
+        <developerConnection>${development.connection.url}</developerConnection>
+        <url>https://github.com/kdavid76/sm-customer</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <profiles>
         <profile>
             <id>scm-release</id>
