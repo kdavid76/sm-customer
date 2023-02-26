@@ -38,11 +38,11 @@ import java.time.Duration
     RouterConfig::class,
     SecurityConfig::class,
     UserHandler::class,
-    CompanyHandler::class
+    CompanyHandler::class,
 )
 @ActiveProfiles("test")
 class UserRouterMockedIntegrationTest(
-    @Autowired var client: WebTestClient
+    @Autowired var client: WebTestClient,
 ) {
     @MockkBean
     lateinit var userRepository: UserRepository
@@ -56,7 +56,7 @@ class UserRouterMockedIntegrationTest(
         "Krisztian",
         "David",
         "my@email.com",
-        mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+        mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")),
     )
     val bkkadmin = TestUtils.createUserProfile(
         "987654",
@@ -64,7 +64,7 @@ class UserRouterMockedIntegrationTest(
         "Mike",
         "Hammer",
         "my@email.com",
-        mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system"))
+        mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system")),
     )
 
     @BeforeEach
@@ -179,7 +179,7 @@ class UserRouterMockedIntegrationTest(
             "Krisztian",
             "David",
             "myemail.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")),
         )
 
         client
@@ -216,7 +216,7 @@ class UserRouterMockedIntegrationTest(
             "Krisztian",
             "David",
             "my@email.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")),
         )
 
         client
@@ -250,7 +250,7 @@ class UserRouterMockedIntegrationTest(
                 "Beszterce",
                 "KK",
                 "bkk@bkk.com",
-                mutableListOf(CompanyRole(Roles.ROLE_USER, "bkk"))
+                mutableListOf(CompanyRole(Roles.ROLE_USER, "bkk")),
             )
         }
         val dkResource = CommonResourceTestUtils.createUserResource(
@@ -260,7 +260,7 @@ class UserRouterMockedIntegrationTest(
             "Krisztian",
             "David",
             "my@email.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")),
         )
 
         client

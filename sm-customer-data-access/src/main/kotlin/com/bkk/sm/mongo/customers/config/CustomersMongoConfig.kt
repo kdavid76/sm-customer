@@ -40,6 +40,6 @@ class CustomersMongoConfig : AbstractReactiveMongoConfiguration() {
     @Bean(name = ["customerMongoTemplate"])
     override fun reactiveMongoTemplate(
         databaseFactory: ReactiveMongoDatabaseFactory,
-        mongoConverter: MappingMongoConverter
+        mongoConverter: MappingMongoConverter,
     ): ReactiveMongoTemplate = ReactiveMongoTemplate(databaseFactory, mongoConverter)
 }

@@ -58,8 +58,8 @@ class CompanyServiceImplTest {
             "11",
             1,
             1,
-            null
-        )
+            null,
+        ),
     )
     private val skse = TestUtils.createCompany(
         UUID.randomUUID().toString(), "skse", "Salgotarjani KSE",
@@ -74,8 +74,8 @@ class CompanyServiceImplTest {
             "18",
             1,
             1,
-            null
-        )
+            null,
+        ),
     )
 
     @BeforeEach
@@ -160,7 +160,7 @@ class CompanyServiceImplTest {
             "Krisztian",
             "David",
             "my@email.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode"))
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode")),
         )
         val companyResource = CompanyConverter.toCompanyResource(bkk).copy(name = "")
         val userResource = UserConverter.toUserResource(davidk).copy(firstName = "")
@@ -191,7 +191,7 @@ class CompanyServiceImplTest {
             "Krisztian",
             "David",
             "my@email.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode"))
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode")),
         )
         davidk.password = "somePassword"
         val companyResource = CompanyConverter.toCompanyResource(bkk)
@@ -224,7 +224,7 @@ class CompanyServiceImplTest {
             "Krisztian",
             "David",
             "my@email.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode"))
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode")),
         )
         val companyResource = CompanyConverter.toCompanyResource(bkk)
         val userResource = UserConverter.toUserResource(davidk)
@@ -281,7 +281,7 @@ class CompanyServiceImplTest {
             "Krisztian",
             "David",
             "my@email.com",
-            null
+            null,
         )
         davidk.password = "password"
         val companyResource = CompanyConverter.toCompanyResource(bkk)

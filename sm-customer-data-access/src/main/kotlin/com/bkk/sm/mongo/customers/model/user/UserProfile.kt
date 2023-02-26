@@ -48,7 +48,7 @@ data class UserProfile(
     var activatedTime: Date? = null,
     var accountLocked: Boolean = true,
     var enabled: Boolean = false,
-    var middleName: String? = null
+    var middleName: String? = null,
 ) {
     @JsonIgnore
     fun isAccountNonExpired(): Boolean = accountExpiryTime?.after(Date.from(Instant.now())) ?: true
@@ -61,7 +61,7 @@ data class UserProfile(
         val list = mutableListOf<GrantedAuthority>()
         list.addAll(
             roles?.asSequence()?.map { it.role }?.distinct()?.map { GrantedAuthority { it.name } }?.toList()
-                ?: mutableListOf()
+                ?: mutableListOf(),
         )
         return list
     }

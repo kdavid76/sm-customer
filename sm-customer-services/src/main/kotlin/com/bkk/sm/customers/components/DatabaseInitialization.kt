@@ -19,7 +19,7 @@ import java.util.*
 @Component
 class DatabaseInitialization(
     private val userMongoRepository: UserRepository,
-    @Qualifier("superUserProperties") private val userProperties: Properties
+    @Qualifier("superUserProperties") private val userProperties: Properties,
 ) {
     val log = KotlinLogging.logger {}
 
@@ -47,7 +47,7 @@ class DatabaseInitialization(
                         lastModificationTime = Date.from(Instant.now()),
                         passwordExpiryTime = null,
                         roles = companyRoles,
-                        passwordExpiringEnabled = false
+                        passwordExpiringEnabled = false,
                     )
                     val savedUser = userMongoRepository.save(userProfile)
                     log.info { "Superuser has been added=$savedUser" }

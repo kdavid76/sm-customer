@@ -36,7 +36,7 @@ data class Company(
     var enabled: Boolean? = false,
 
     @Version
-    var version: Long = 0
+    var version: Long = 0,
 ) {
     override fun toString(): String = "Company[id=${id ?: "N/A"}, code=$code}, name=$name, email=$email," +
         " address=$address, taxId=${taxId ?: ""}, bankAccountNumber=${bankAccountNumber ?: ""}," +

@@ -25,7 +25,7 @@ class UserConverter {
                 failedLoginAttempts = user.failedLoginAttempts,
                 activationKey = user.activationKey,
                 roles = user.roles,
-                passwordExpiringEnabled = user.passwordExpiringEnabled
+                passwordExpiringEnabled = user.passwordExpiringEnabled,
             )
         }
 
@@ -38,7 +38,7 @@ class UserConverter {
                 activatedTime = user.activatedTime, lastModificationTime = user.lastModificationTime,
                 passwordExpiryTime = user.passwordExpiryTime, password = user.password ?: "",
                 failedLoginAttempts = user.failedLoginAttempts, activationKey = user.activationKey,
-                roles = user.roles, passwordExpiringEnabled = user.passwordExpiringEnabled
+                roles = user.roles, passwordExpiringEnabled = user.passwordExpiringEnabled,
             )
         }
     }
