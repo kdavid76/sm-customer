@@ -45,8 +45,8 @@ class CompanyHandlerTest {
             "11",
             1,
             1,
-            null
-        )
+            null,
+        ),
     )
 
     @BeforeEach
@@ -103,7 +103,7 @@ class CompanyHandlerTest {
             "Krisztian",
             "David",
             "my@email.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode"))
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "icecode")),
         )
         val company = CompanyConverter.toCompanyResource(bkk)
         val user = UserConverter.toUserResource(davidk)

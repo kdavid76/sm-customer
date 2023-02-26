@@ -1,0 +1,6 @@
+{
+  "name": "RELEASE_THIS_AS",
+  "type":  "String",
+  "default value": "",
+  "description": "If you set this field, this will be used as next release version. Both NEXT_SNAPSHOT_AS and INCREMENT_FIELD settings will be ignored. The next snapshot version will be calculated from the released version. \n\nFormat: \"x.y.z\", where all of \"x' and \"y\" and \"z\" are positive integers. Please be very careful with this, because the versioning can go terribly wrong if you make a mistake here.\n\nExample:\nRELEASE_THIS_AS: 1.0.0\nThe next snapshot will be 1.0.1-SNAPSHOT regardless of NEXT_SNAPSHOT_AS and INCREMENT_FIELD settings.\n\nIf you leave it blank, then it is not used, and the pipeline will check if NEXT_SNAPSHOT_AS is set or not."
+}

@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.server.buildAndAwait
 
 @Component
 class CompanyHandler(
-    private val companyService: CompanyService
+    private val companyService: CompanyService,
 ) {
     val log = KotlinLogging.logger {}
 

@@ -38,7 +38,7 @@ class CompanyServiceImpl(
     private val companyResourceValidator: CompanyResourceValidator,
     private val companyRepository: CompanyRepository,
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
 ) : CompanyService {
 
     val log = KotlinLogging.logger {}
@@ -75,7 +75,7 @@ class CompanyServiceImpl(
                     .objectName(CompanyAndUserResource::class.java.name)
                     .addFieldErrors(companyErrors)
                     .addFieldErrors(userErrors)
-                    .build()
+                    .build(),
             )
         }
 
@@ -98,7 +98,7 @@ class CompanyServiceImpl(
                         FormErrorResource.Builder()
                             .objectName(CompanyAndUserResource::class.java.name)
                             .addFieldErrors(userErrors)
-                            .build()
+                            .build(),
                     )
                 }
                 user = UserConverter.toUserBase(userResource)
@@ -117,8 +117,8 @@ class CompanyServiceImpl(
         return ServerResponse.status(HttpStatus.CREATED).bodyValueAndAwait(
             CompanyAndUserResource(
                 CompanyConverter.toCompanyResource(saved),
-                if (user == null) null else UserConverter.toUserResource(user!!)
-            )
+                if (user == null) null else UserConverter.toUserResource(user!!),
+            ),
         )
     }
 

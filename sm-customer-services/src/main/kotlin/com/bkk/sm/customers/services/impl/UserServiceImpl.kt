@@ -27,7 +27,7 @@ import java.util.*
 class UserServiceImpl(
     private val userRepository: UserRepository,
     private val userResourceValidator: UserResourceValidator,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
 ) : UserService {
 
     val log = KotlinLogging.logger {}
@@ -58,7 +58,7 @@ class UserServiceImpl(
                 FormErrorResource.Builder()
                     .objectName(UserResource::class.java.name)
                     .addFieldErrors(errors)
-                    .build()
+                    .build(),
             )
         }
 

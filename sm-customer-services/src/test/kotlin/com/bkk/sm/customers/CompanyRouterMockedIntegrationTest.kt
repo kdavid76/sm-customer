@@ -44,11 +44,11 @@ import java.time.LocalDateTime
     RouterConfig::class,
     SecurityConfig::class,
     UserHandler::class,
-    CompanyHandler::class
+    CompanyHandler::class,
 )
 @ActiveProfiles("test")
 class CompanyRouterMockedIntegrationTest(
-    @Autowired var client: WebTestClient
+    @Autowired var client: WebTestClient,
 ) {
     @MockkBean
     lateinit var userRepository: UserRepository
@@ -62,7 +62,7 @@ class CompanyRouterMockedIntegrationTest(
         "Krisztian",
         "David",
         "my@email.com",
-        mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+        mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")),
     )
     val bkkadmin = TestUtils.createUserProfile(
         "987654",
@@ -70,7 +70,7 @@ class CompanyRouterMockedIntegrationTest(
         "Mike",
         "Hammer",
         "my@email.com",
-        mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system"))
+        mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system")),
     )
     private val bkk = CommonResourceTestUtils.createCompanyResource(
         null, "bkk", "Beszterce KK",
@@ -84,8 +84,8 @@ class CompanyRouterMockedIntegrationTest(
             "86",
             7,
             40,
-            null
-        )
+            null,
+        ),
     )
     private val apple = TestUtils.createCompany(
         null, "apple", "Apple",
@@ -99,8 +99,8 @@ class CompanyRouterMockedIntegrationTest(
             "86",
             7,
             40,
-            null
-        )
+            null,
+        ),
     )
 
     @BeforeEach
@@ -364,7 +364,7 @@ class CompanyRouterMockedIntegrationTest(
                     }
                     Assertions.assertThat(CompanyAndUserResource.userResource!!.roles).containsExactly(
                         CompanyRole(Roles.ROLE_SUPERADMIN, "system"),
-                        CompanyRole(Roles.ROLE_ADMIN, "bkk")
+                        CompanyRole(Roles.ROLE_ADMIN, "bkk"),
                     )
                 }
             }
@@ -422,7 +422,7 @@ class CompanyRouterMockedIntegrationTest(
                         Assertions.assertThat(it1.size).isEqualTo(1)
                     }
                     Assertions.assertThat(CompanyAndUserResource.userResource!!.roles).containsExactly(
-                        CompanyRole(Roles.ROLE_ADMIN, "bkk")
+                        CompanyRole(Roles.ROLE_ADMIN, "bkk"),
                     )
                 }
             }

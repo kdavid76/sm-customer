@@ -37,7 +37,7 @@ class UserServiceImplTest {
         "Krisztian",
         "David",
         "my@email.com",
-        mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+        mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")),
     )
     private val bkkadmin = TestUtils.createUserProfile(
         "987654",
@@ -45,7 +45,7 @@ class UserServiceImplTest {
         "Mike",
         "Hammer",
         "my@email.com",
-        mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system"))
+        mutableListOf(CompanyRole(Roles.ROLE_SUPERADMIN, "system")),
     )
 
     @Test

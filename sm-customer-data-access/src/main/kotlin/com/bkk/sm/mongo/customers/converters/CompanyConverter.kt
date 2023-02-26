@@ -12,7 +12,7 @@ class CompanyConverter {
             bankAccountNumber = company.bankAccountNumber, optionalContactInfo = company.optionalContactInfo,
             activationToken = company.activationToken, activationTime = company.activationTime,
             registrationTime = company.registrationTime, lastModificationTime = company.lastModificationTime,
-            enabled = company.enabled, version = company.version
+            enabled = company.enabled, version = company.version,
         )
 
         fun toCompany(company: CompanyResource) = Company(
@@ -21,7 +21,7 @@ class CompanyConverter {
             bankAccountNumber = company.bankAccountNumber, optionalContactInfo = company.optionalContactInfo,
             activationToken = company.activationToken, activationTime = company.activationTime,
             registrationTime = company.registrationTime, lastModificationTime = company.lastModificationTime,
-            enabled = company.enabled, version = company.version
+            enabled = company.enabled, version = company.version,
         )
     }
 }

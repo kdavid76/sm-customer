@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.server.buildAndAwait
 
 @Component
 class UserHandler(
-    private val userService: UserService
+    private val userService: UserService,
 ) {
     val log = KotlinLogging.logger {}
 

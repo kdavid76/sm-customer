@@ -40,14 +40,14 @@ class TestUtils {
             firstName: String,
             lastName: String,
             email: String,
-            roles: MutableList<CompanyRole>?
+            roles: MutableList<CompanyRole>?,
         ) = UserProfile(
             id = id,
             username = username,
             firstName = firstName,
             lastName = lastName,
             email = email,
-            roles = roles
+            roles = roles,
         )
 
         fun createCompany(
@@ -63,13 +63,13 @@ class TestUtils {
             lastModificationTime: LocalDateTime?,
             enabled: Boolean?,
             version: Long,
-            address: Address
+            address: Address,
         ) = Company(
             id = id, code = code, name = name, email = email, taxId = taxId,
             bankAccountNumber = bankAccountNumber, activationToken = activationToken,
             activationTime = activationTime, registrationTime = registrationTime,
             lastModificationTime = lastModificationTime, enabled = enabled,
-            version = version, address = address
+            version = version, address = address,
         )
     }
 }

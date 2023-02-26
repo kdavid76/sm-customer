@@ -82,7 +82,7 @@ class UserHandlerTest {
             "Krisztian",
             "David",
             "my@email.com",
-            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk"))
+            mutableListOf(CompanyRole(Roles.ROLE_ADMIN, "bkk")),
         )
         val request = MockServerRequest.builder().body(Mono.just(UserConverter.toUserResource(davidk)))
         coEvery { userService.registerUser(any()) } returns ServerResponse.status(HttpStatus.CREATED).buildAndAwait()
