@@ -1,0 +1,6 @@
+{
+  "name": "NEXT_SNAPSHOT_AS",
+  "type":  "String",
+  "default value": "",
+  "description": "Format: \"x.y.z-SNAPSHOT\", where all of \"x' and \"y\" and \"z\" are positive integers. Please be very careful with this, because the versioning can go terribly wrong if you make a mistake here.\n\nExample:\nCURRENT_VERSION: 0.1.7-SNAPSHOT\nNEXT_SNAPSHOT_AS: 0.3.0-SNAPSHOT\nThen next snapshot version release version will be 0.1.7, but the next snapshot will be 0.3.0-SNAPSHOT. Please not if you just increment the Minor Version number with one, the you get the same behaviour as setting INCREMENT_FIELD to \"Minor Version\" \n\nIf you leave it blank, then it is not used, and the pipeline calculate the next versions based on INCREMENT_FIELD value."
+}

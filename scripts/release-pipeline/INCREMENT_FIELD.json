@@ -1,0 +1,9 @@
+{
+  "name": "INCREMENT_FIELD",
+  "type":  "Choice",
+  "options": [
+    "Build Number", "Minor Version", "Major Version"
+  ],
+  "default value": "",
+  "description": "Which part of the version should be incremented."
+}
