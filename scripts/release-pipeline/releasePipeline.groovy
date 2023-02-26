@@ -58,7 +58,7 @@ pipeline {
                 }
                 sh '''
                     git add .
-                    git commit -m "SM-COMMON: Release ${pomVersion}"
+                    git commit -m "SM-CUSTOMER: Release ${pomVersion}"
                     git push
                 '''
             }
@@ -78,6 +78,11 @@ pipeline {
                 }
             }
         }
+        stage('Build snapshot artifacts') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
         stage('Push snapshot to GitHub') {
             steps {
                 script {
@@ -86,7 +91,7 @@ pipeline {
                 }
                 sh '''
                     git add .
-                    git commit -m "SM-COMMON: Next snapshot ${pomVersion}"
+                    git commit -m "SM-CUSTOMERN: Next snapshot ${pomVersion}"
                     git push
                 '''
             }
