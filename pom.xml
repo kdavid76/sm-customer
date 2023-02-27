@@ -22,9 +22,16 @@
     </modules>
 
     <properties>
-        <sm-commons.version>0.0.2</sm-commons.version>
+        <sm-commons.version>0.0.1</sm-commons.version>
         <development.connection.url>scm:git:git@github.com:kdavid76/sm-customer.git</development.connection.url>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -79,6 +86,12 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <scm>
+        <developerConnection>${development.connection.url}</developerConnection>
+        <url>https://github.com/kdavid76/sm-customer</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <profiles>
         <profile>

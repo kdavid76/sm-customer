@@ -1,4 +1,7 @@
 // Uses Declarative syntax to run commands inside a container.
+def NEXT_RELEASE = ''
+def NEXT_SNAPSHOT = ''
+
 pipeline {
     agent { label 'kubeagent' }
     options {
@@ -8,7 +11,6 @@ pipeline {
     environment {
         GITHUB_PATH = "https://${env.GITHUB_APIKEY}@github.com/kdavid76/sm-customer.git"
         DEVELOPMENT_CONN_URL = "scm:git:https://${env.GITHUB_APIKEY}@github.com/kdavid76/sm-customer.git"
-        myVar = "Value of myVvar"
     }
     tools {
         jdk 'oracle-jdk-17'
@@ -38,11 +40,10 @@ pipeline {
         stage('Calculate release version') {
             steps {
                 script {
-                    def nextRelease = calculateNextRelease("${RELEASE_THIS_AS}")
-                    echo "CALCULATED NEXT RELEASE: ${nextRelease}"
-
-                    changePomVersion("${nextRelease}")
+                    NEXT_RELEASE= calculateNextRelease("${RELEASE_THIS_AS}")
                 }
+                echo "CALCULATED NEXT RELEASE: ${NEXT_RELEASE}"
+                changePomVersion("${NEXT_RELEASE}")
             }
         }
         stage('Build release artifacts') {
@@ -52,15 +53,10 @@ pipeline {
         }
         stage('Push release to GitHub') {
             steps {
-                script {
-                    def mavenPom = readMavenPom file: 'pom.xml'
-                    def pomVersion = mavenPom.version
-                }
-                sh '''
-                    git add .
-                    git commit -m "SM-COMMON: Release ${pomVersion}"
-                    git push
-                '''
+                sh('git add .')
+                sh("git commit -m 'SM-CUSTOMER: Release ${NEXT_RELEASE}'")
+                sh("git tag -a 'v@${NEXT_RELEASE}' -m 'Release ${NEXT_RELEASE}' HEAD")
+                sh('git push --follow-tags')
             }
         }
         stage('Push release to artifactory') {
@@ -71,29 +67,17 @@ pipeline {
         stage('Calculate next snapshot version') {
             steps {
                 script {
-                    def nextSnapshot = calculateNextSnapshot("${RELEASE_THIS_AS}", "${NEXT_SNAPSHOT_AS}")
-                    echo "CALCULATED NEXT SNAPSHOT: ${nextSnapshot}"
-
-                    changePomVersion("${nextSnapshot}")
+                    NEXT_SNAPSHOT = calculateNextSnapshot("${RELEASE_THIS_AS}", "${NEXT_SNAPSHOT_AS}")
                 }
+                echo "CALCULATED NEXT SNAPSHOT: ${NEXT_SNAPSHOT}"
+                changePomVersion("${NEXT_SNAPSHOT}")
             }
         }
         stage('Push snapshot to GitHub') {
             steps {
-                script {
-                    def mavenPom = readMavenPom file: 'pom.xml'
-                    def pomVersion = mavenPom.version
-                }
-                sh '''
-                    git add .
-                    git commit -m "SM-COMMON: Next snapshot ${pomVersion}"
-                    git push
-                '''
-            }
-        }
-        stage('Push snapshot to artifactory') {
-            steps {
-                sh 'mvn deploy'
+                sh('git add .')
+                sh("git commit -m 'SM-CUSTOMER: Next snapshot ${NEXT_SNAPSHOT}'")
+                sh('git push')
             }
         }
     }
