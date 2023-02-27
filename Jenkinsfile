@@ -48,5 +48,14 @@ pipeline  {
                 '''
             }
         }
+
+        stage('Deploy snapshot to artifactory') {
+            when {
+                branch "develop"
+            }
+            steps {
+                sh('mvn deploy')
+            }
+        }
     }
 }
