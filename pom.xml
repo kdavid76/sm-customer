@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.sportmanagement.bkk</groupId>
         <artifactId>sm-parent</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -22,8 +22,9 @@
     </modules>
 
     <properties>
-        <sm-commons.version>0.0.1</sm-commons.version>
+        <sm-commons.version>0.0.2</sm-commons.version>
         <development.connection.url>scm:git:git@github.com:kdavid76/sm-customer.git</development.connection.url>
+        <image.path>davidkrisztian76/sm-customer</image.path>
     </properties>
 
     <dependencies>
@@ -38,6 +39,18 @@
             <dependency>
                 <groupId>com.sportmanagement.bkk</groupId>
                 <artifactId>sm-common-models</artifactId>
+                <version>${sm-commons.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.yaml</groupId>
+                        <artifactId>snakeyaml</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sportmanagement.bkk</groupId>
+                <artifactId>sm-common-mongo</artifactId>
                 <version>${sm-commons.version}</version>
                 <exclusions>
                     <exclusion>
@@ -62,6 +75,25 @@
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <configuration>
+                    <to>
+                        <image>docker.io/${image.path}</image>
+                        <tags>latest,${project.version}</tags>
+                    </to>
+                    <from>
+                        <image>${maven.jib.image}</image>
+                    </from>
+                    <container>
+                        <mainClass>com.bkk.sm.customers.CustomerServiceApplication</mainClass>
+                    </container>
+                </configuration>
+            </plugin>
+        </plugins>
+
         <pluginManagement>
             <plugins>
                 <plugin>

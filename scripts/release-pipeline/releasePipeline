@@ -18,7 +18,7 @@ pipeline {
         git 'default'
     }
     stages {
-        stage('Checkout') {
+        stage('Checkout from Git') {
             steps {
                 cleanWs()
                 checkout([
@@ -26,58 +26,65 @@ pipeline {
                         branches: [[name: 'master']],
                         userRemoteConfigs: [[url: env.GITHUB_PATH]]
                 ])
+
+                sh('git config --global user.email "mikehammer1902@gmail.com"')
+                sh('git config --global user.name "kdavid76"')
+                sh('git checkout master')
             }
         }
-        stage('Configure Git') {
-            steps {
-                sh '''
-                        git config --global user.email "mikehammer1902@gmail.com"
-                        git config --global user.name "kdavid76"
-                        git checkout master
-                '''
-            }
-        }
-        stage('Calculate release version') {
+        stage('Build release') {
             steps {
                 script {
                     NEXT_RELEASE= calculateNextRelease("${RELEASE_THIS_AS}")
                 }
                 echo "CALCULATED NEXT RELEASE: ${NEXT_RELEASE}"
                 changePomVersion("${NEXT_RELEASE}")
+
+                sh ('mvn clean package')
             }
         }
-        stage('Build release artifacts') {
-            steps {
-                sh 'mvn clean package'
+        stage('Deploy release') {
+            parallel {
+                stage('Push to GitHub') {
+                    steps {
+                        sh('git add .')
+                        sh("git commit -m 'SM-CUSTOMER: Release ${NEXT_RELEASE}'")
+                        sh("git tag -a 'v@${NEXT_RELEASE}' -m 'Release ${NEXT_RELEASE}' HEAD")
+                        sh('git push --follow-tags')
+                    }
+                }
+                stage('Push to artifactory') {
+                    steps {
+                        sh 'mvn deploy'
+                    }
+                }
+                stage('Push to dockerhub') {
+                    steps {
+                        sh 'mvn jib:build'
+                    }
+                }
             }
         }
-        stage('Push release to GitHub') {
-            steps {
-                sh('git add .')
-                sh("git commit -m 'SM-CUSTOMER: Release ${NEXT_RELEASE}'")
-                sh("git tag -a 'v@${NEXT_RELEASE}' -m 'Release ${NEXT_RELEASE}' HEAD")
-                sh('git push --follow-tags')
-            }
-        }
-        stage('Push release to artifactory') {
-            steps {
-                sh 'mvn deploy'
-            }
-        }
-        stage('Calculate next snapshot version') {
+        stage('Build next snapshot') {
             steps {
                 script {
                     NEXT_SNAPSHOT = calculateNextSnapshot("${RELEASE_THIS_AS}", "${NEXT_SNAPSHOT_AS}")
                 }
                 echo "CALCULATED NEXT SNAPSHOT: ${NEXT_SNAPSHOT}"
                 changePomVersion("${NEXT_SNAPSHOT}")
+
+                sh ('mvn clean package')
             }
         }
-        stage('Push snapshot to GitHub') {
-            steps {
-                sh('git add .')
-                sh("git commit -m 'SM-CUSTOMER: Next snapshot ${NEXT_SNAPSHOT}'")
-                sh('git push')
+        stage('Deploy snapshot') {
+            parallel {
+                stage('Push snapshot to GitHub') {
+                    steps {
+                        sh('git add .')
+                        sh("git commit -m 'SM-CUSTOMER: Next snapshot ${NEXT_SNAPSHOT}'")
+                        sh('git push')
+                    }
+                }
             }
         }
     }
