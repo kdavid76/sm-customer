@@ -61,10 +61,7 @@ pipeline {
                 stage('Push to dockerhub') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'DockerHub_Credentials', passwordVariable: 'DOCKER_REGISTRY_PWD', usernameVariable: 'DOCKER_REGISTRY_USER')]) {
-                            sh('cd sm-customer-services')
-                            sh('pwd')
-                            sh('ls -la')
-                            sh ('mvn jib:build')
+                            sh ('mvn -pl :sm-customer-services -am jib:build')
                         }
                     }
                 }
