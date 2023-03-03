@@ -188,7 +188,7 @@
                         <image>docker.io/${image.path}</image>
                         <tags>latest,${project.version}</tags>
                         <auth>
-                            <usesename>${DOCKER_REGISTRY_USER}</usesename>
+                            <userename>${DOCKER_REGISTRY_USER}</userename>
                             <password>${DOCKER_REGISTRY_PWD}</password>
                         </auth>
                     </to>
