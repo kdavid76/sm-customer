@@ -5,7 +5,7 @@
     <parent>
         <artifactId>sm-customer-parent</artifactId>
         <groupId>com.sportmanagement.bkk</groupId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -188,7 +188,7 @@
                         <image>docker.io/${image.path}</image>
                         <tags>latest,${project.version}</tags>
                         <auth>
-                            <usesename>${DOCKER_REGISTRY_USER}</usesename>
+                            <username>${DOCKER_REGISTRY_USER}</username>
                             <password>${DOCKER_REGISTRY_PWD}</password>
                         </auth>
                     </to>
