@@ -32,6 +32,16 @@ pipeline {
                 sh('git checkout master')
             }
         }
+        stage('Watta fuck?') {
+            steps {
+                sh('ls -la')
+                sh('less pom.xml')
+                sh('cd sm-customer-services')
+                sh('ls -la')
+                
+            }
+        }
+        /*
         stage('Build release') {
             steps {
                 script {
@@ -89,6 +99,7 @@ pipeline {
                 }
             }
         }
+        */
     }
 }
 
