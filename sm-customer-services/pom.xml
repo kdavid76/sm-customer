@@ -179,6 +179,27 @@
                 <groupId>com.github.gantsign.maven</groupId>
                 <artifactId>ktlint-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${maven.jib.version}</version>
+                <configuration>
+                    <to>
+                        <image>docker.io/${image.path}</image>
+                        <tags>latest,${project.version}</tags>
+                        <auth>
+                            <usesename>${DOCKER_REGISTRY_USER}</usesename>
+                            <password>${DOCKER_REGISTRY_PWD}</password>
+                        </auth>
+                    </to>
+                    <from>
+                        <image>${maven.jib.image}</image>
+                    </from>
+                    <container>
+                        <mainClass>com.bkk.sm.customers.CustomerServiceApplication</mainClass>
+                    </container>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
