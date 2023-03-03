@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.sportmanagement.bkk</groupId>
         <artifactId>sm-parent</artifactId>
-        <version>0.0.4</version>
+        <version>0.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -22,7 +22,7 @@
     </modules>
 
     <properties>
-        <sm-commons.version>0.0.2</sm-commons.version>
+        <sm-commons.version>0.1.0</sm-commons.version>
         <development.connection.url>scm:git:git@github.com:kdavid76/sm-customer.git</development.connection.url>
         <image.path>davidkrisztian76/sm-customer</image.path>
     </properties>
