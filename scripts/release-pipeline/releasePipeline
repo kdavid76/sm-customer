@@ -36,7 +36,7 @@ pipeline {
             steps {
                 sh('ls -la')
                 sh('less pom.xml')
-                cd 'sm-customer-services'
+                sh('cd "sm-customer-services"')
                 sh('ls -la')
                 
             }
