@@ -55,12 +55,15 @@ pipeline {
                 }
                 stage('Push to artifactory') {
                     steps {
-                        sh 'mvn deploy'
+                        sh ('mvn deploy')
                     }
                 }
                 stage('Push to dockerhub') {
                     steps {
-                        sh 'mvn jib:build'
+                        withCredentials([usernamePassword(credentialsId: 'DockerHub_Credentials', passwordVariable: 'DOCKER_REGISTRY_PWD', usernameVariable: 'DOCKER_REGISTRY_USER')]) {
+                            sh('cd sm-customer-services')
+                            sh ('mvn jib:build')
+                        }
                     }
                 }
             }
