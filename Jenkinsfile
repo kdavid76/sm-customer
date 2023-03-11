@@ -22,6 +22,19 @@ pipeline  {
                     branches: [[name: env.BRANCH_NAME]],
                     userRemoteConfigs: [[url: env.GITHUB_PATH]]
                 ])
+                script {
+                    def output = sh (
+                        script: 'git log -1 --pretty=%B',
+                        returnStdout: true
+                    )
+                    echo "Last commit message: ${output}"
+                    def startsWiths = output.startsWith("[skip ci]")
+                    echo "Result: ${startsWiths}"
+                    if (startsWiths) {
+                        currentBuild.getRawBuild().getExecutor().interrupt(Result.SUCCESS)
+                        sleep(1)   // Interrupt is not blocking and does not take effect immediately.
+                    }
+                }
             }
         }
 
