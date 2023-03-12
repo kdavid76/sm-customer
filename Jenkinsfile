@@ -53,7 +53,6 @@ pipeline  {
                 REGISTRY_CREDENTIALS = 'DockerHub_Credentials'
             }
             steps {
-                sh('chmod +x /usr/bin/docker')
                 script {
                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME
 
