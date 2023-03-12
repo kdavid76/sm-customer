@@ -52,13 +52,14 @@ pipeline  {
             environment {
                 REGISTRY_CREDENTIALS = 'DockerHub_Credentials'
             }
-           steps {
+            steps {
+                sh('chmod +x /usr/bin/docker')
                 script {
                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME
 
                     echo "Docker image: ${DOCKER_IMAGE}"
 
-                    docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+                    docker.withRegistry( 'https://registry.hub.docker.com', REGISTRY_CREDENTIALS ) {
                         dockerImage.push("latest")
                     }
                 }
