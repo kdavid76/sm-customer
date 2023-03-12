@@ -58,7 +58,8 @@ pipeline  {
                         DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME
                         echo "Docker image: ${DOCKER_IMAGE}"
                         docker.withRegistry( 'https://registry.hub.docker.com', REGISTRY_CREDENTIALS ) {
-                        DOCKER_IMAGE.push("latest")
+                            DOCKER_IMAGE.push("latest")
+                        }
                     }
                 }
             }
