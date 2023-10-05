@@ -7,8 +7,6 @@ pipeline  {
     }
     environment {
         GITHUB_PATH = "https://${env.GITHUB_APIKEY}@github.com/kdavid76/sm-customer.git"
-        DOCKER_IMAGE_NAME = "davidkrisztian76/sm-customer"
-        DOCKER_IMAGE = ""
     }
     tools {
         jdk 'oracle-jdk-17'
@@ -48,24 +46,6 @@ pipeline  {
             }
         }
 
-        stage('Build and deploy Docker Image') {
-            environment {
-                REGISTRY_CREDENTIALS = 'DockerHub_Credentials'
-            }
-            steps {
-                script {
-                    container('docker') {
-                        DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME
-                        echo "Docker image: ${DOCKER_IMAGE}"
-                        docker.withRegistry( 'https://registry.hub.docker.com', REGISTRY_CREDENTIALS ) {
-                            DOCKER_IMAGE.push("latest")
-                        }
-                    }
-                }
-            }
-        }
-
-        /*
         stage('Static style check') {
             steps {
                 sh '''
@@ -81,15 +61,5 @@ pipeline  {
                 '''
             }
         }
-
-        stage('Deploy snapshot to artifactory') {
-            when {
-                branch "develop"
-            }
-            steps {
-                sh('mvn deploy')
-            }
-        }
-        */
     }
 }

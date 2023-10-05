@@ -7,8 +7,8 @@ import com.bkk.sm.common.utils.CommonResourceTestUtils
 import com.bkk.sm.customers.config.RouterConfig
 import com.bkk.sm.customers.config.SecurityConfig
 import com.bkk.sm.customers.config.TestConfig
-import com.bkk.sm.customers.services.handlers.CompanyHandler
-import com.bkk.sm.customers.services.handlers.UserHandler
+import com.bkk.sm.customers.handlers.impl.MongoCompanyHandlerImpl
+import com.bkk.sm.customers.handlers.impl.MongoUserHandlerImpl
 import com.bkk.sm.customers.utils.TestUtils
 import com.bkk.sm.mongo.customers.converters.UserConverter
 import com.bkk.sm.mongo.customers.model.user.UserProfile
@@ -37,8 +37,8 @@ import java.time.Duration
     TestConfig::class,
     RouterConfig::class,
     SecurityConfig::class,
-    UserHandler::class,
-    CompanyHandler::class,
+    MongoUserHandlerImpl::class,
+    MongoCompanyHandlerImpl::class,
 )
 @ActiveProfiles("test")
 class UserRouterMockedIntegrationTest(

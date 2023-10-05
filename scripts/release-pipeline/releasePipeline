@@ -11,6 +11,9 @@ pipeline {
     environment {
         GITHUB_PATH = "https://${env.GITHUB_APIKEY}@github.com/kdavid76/sm-customer.git"
         DEVELOPMENT_CONN_URL = "scm:git:https://${env.GITHUB_APIKEY}@github.com/kdavid76/sm-customer.git"
+        DOCKER_IMAGE_NAME = "davidkrisztian76/sm-customer"
+        DOCKER_IMAGE = ""
+
     }
     tools {
         jdk 'oracle-jdk-17'
@@ -58,17 +61,24 @@ pipeline {
                         sh ('mvn deploy')
                     }
                 }
-            }
-        }
-        stage('Push to dockerhub') {
-            steps {
-                dir('sm-customer-services') {
-                    withCredentials([usernamePassword(credentialsId: 'DockerHub_Credentials', passwordVariable: 'DOCKER_REGISTRY_PWD', usernameVariable: 'DOCKER_REGISTRY_USER')]) {
-                        sh ('mvn jib:build')
+                stage('Push to DockerHub') {
+                    environment {
+                        REGISTRY_CREDENTIALS = 'DockerHub_Credentials'
+                    }
+                    steps {
+                        script {
+                            container('docker') {
+                                DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME
+                                docker.withRegistry( 'https://registry.hub.docker.com', REGISTRY_CREDENTIALS ) {
+                                    DOCKER_IMAGE.push("latest")
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
+
         stage('Build next snapshot') {
             steps {
                 script {

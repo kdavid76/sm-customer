@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
+import java.util.*
 
 @Document("companies")
 data class Company(
@@ -27,11 +27,11 @@ data class Company(
 
     var bankAccountNumber: String? = "",
     var optionalContactInfo: String? = "",
-    var activationToken: String? = "",
+    var activationKey: String? = "",
 
-    var activationTime: LocalDateTime?,
-    var registrationTime: LocalDateTime?,
-    var lastModificationTime: LocalDateTime?,
+    var activationTime: Date?,
+    var registrationTime: Date?,
+    var lastModificationTime: Date?,
 
     var enabled: Boolean? = false,
 
@@ -40,7 +40,7 @@ data class Company(
 ) {
     override fun toString(): String = "Company[id=${id ?: "N/A"}, code=$code}, name=$name, email=$email," +
         " address=$address, taxId=${taxId ?: ""}, bankAccountNumber=${bankAccountNumber ?: ""}," +
-        "optionalContactInfo=${optionalContactInfo ?: ""}, activationToken=${activationToken ?: ""}," +
+        "optionalContactInfo=${optionalContactInfo ?: ""}, activationToken=${activationKey ?: ""}," +
         " activationTime=${activationTime ?: ""}, registrationTime=${registrationTime ?: ""}," +
         " lastModificationTime=${lastModificationTime ?: ""}, enabled=${enabled ?: ""}, version=$version]"
 }

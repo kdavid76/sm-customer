@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
@@ -23,23 +23,17 @@
 
     <properties>
         <sm-commons.version>0.1.0</sm-commons.version>
+        <sm-commons-model.version>0.1.4-SNAPSHOT</sm-commons-model.version>
         <development.connection.url>scm:git:git@github.com:kdavid76/sm-customer.git</development.connection.url>
         <image.path>davidkrisztian76/sm-customer</image.path>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib</artifactId>
-        </dependency>
-    </dependencies>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.sportmanagement.bkk</groupId>
                 <artifactId>sm-common-models</artifactId>
-                <version>${sm-commons.version}</version>
+                <version>${sm-commons-model.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.yaml</groupId>
@@ -64,7 +58,7 @@
             <dependency>
                 <groupId>com.sportmanagement.bkk</groupId>
                 <artifactId>sm-common-models</artifactId>
-                <version>${sm-commons.version}</version>
+                <version>${sm-commons-model.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>

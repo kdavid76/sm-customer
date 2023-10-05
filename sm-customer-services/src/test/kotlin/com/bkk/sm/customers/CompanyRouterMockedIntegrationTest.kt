@@ -9,8 +9,8 @@ import com.bkk.sm.common.utils.CommonResourceTestUtils
 import com.bkk.sm.customers.config.RouterConfig
 import com.bkk.sm.customers.config.SecurityConfig
 import com.bkk.sm.customers.config.TestConfig
-import com.bkk.sm.customers.services.handlers.CompanyHandler
-import com.bkk.sm.customers.services.handlers.UserHandler
+import com.bkk.sm.customers.handlers.impl.MongoCompanyHandlerImpl
+import com.bkk.sm.customers.handlers.impl.MongoUserHandlerImpl
 import com.bkk.sm.customers.utils.TestUtils
 import com.bkk.sm.mongo.customers.converters.CompanyConverter
 import com.bkk.sm.mongo.customers.converters.UserConverter
@@ -36,15 +36,16 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 import java.time.Duration
-import java.time.LocalDateTime
+import java.time.Instant
+import java.util.*
 
 @WebFluxTest
 @Import(
     TestConfig::class,
     RouterConfig::class,
     SecurityConfig::class,
-    UserHandler::class,
-    CompanyHandler::class,
+    MongoUserHandlerImpl::class,
+    MongoCompanyHandlerImpl::class,
 )
 @ActiveProfiles("test")
 class CompanyRouterMockedIntegrationTest(
@@ -75,7 +76,7 @@ class CompanyRouterMockedIntegrationTest(
     private val bkk = CommonResourceTestUtils.createCompanyResource(
         null, "bkk", "Beszterce KK",
         "bkk@bkk.hu", null, null, "",
-        LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true, 1,
+        Date.from(Instant.now()), Date.from(Instant.now()), Date.from(Instant.now()), true, 1,
         CommonResourceTestUtils.createAddress(
             "Salgotarjan",
             3100,
@@ -90,7 +91,7 @@ class CompanyRouterMockedIntegrationTest(
     private val apple = TestUtils.createCompany(
         null, "apple", "Apple",
         "info@apple.com", null, null, "",
-        LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), true, 1,
+        Date.from(Instant.now()), Date.from(Instant.now()), Date.from(Instant.now()), true, 1,
         CommonResourceTestUtils.createAddress(
             "Salgotarjan",
             3100,

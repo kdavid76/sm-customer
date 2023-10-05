@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: {{ .Values.deployments.namespace | default .Release.Namespace }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort | default 8080 }}
+      protocol: {{ .Values.service.protocol | default "tcp"}}
+  selector:
+    app: {{ .Values.service.selector | default .Release.Name}}
