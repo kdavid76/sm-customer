@@ -1,6 +1,12 @@
 spring:
   application:
     name: customer-service
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
 server:
   port: 1901
 com:

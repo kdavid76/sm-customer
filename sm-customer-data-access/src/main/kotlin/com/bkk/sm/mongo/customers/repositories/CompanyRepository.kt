@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository
 interface CompanyRepository : CoroutineCrudRepository<Company, String> {
     suspend fun findByCode(code: String): Company?
 
-    suspend fun findCompanyByCodeAndActivationTokenAfter(code: String, token: String): Company?
+    suspend fun findCompanyByCodeAndActivationKey(code: String, token: String): Company?
 }

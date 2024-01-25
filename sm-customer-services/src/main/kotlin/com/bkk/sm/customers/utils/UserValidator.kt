@@ -11,7 +11,7 @@ class UserValidator {
         fun validateUser(
             userResource: UserResource,
             validator: UserResourceValidator,
-            checkPassword: Boolean = true
+            checkPassword: Boolean = true,
         ): Errors {
             val errors: Errors = BeanPropertyBindingResult(userResource, UserResource::class.java.name)
             validator.validate(userResource, errors)

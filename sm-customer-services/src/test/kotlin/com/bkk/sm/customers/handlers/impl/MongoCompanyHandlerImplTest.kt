@@ -2,7 +2,6 @@ package com.bkk.sm.customers.handlers.impl
 
 import com.bkk.sm.common.customer.company.CompanyRole
 import com.bkk.sm.common.customer.resources.CompanyAndUserResource
-import com.bkk.sm.common.customer.resources.CompanyResource
 import com.bkk.sm.common.customer.validators.CompanyResourceValidator
 import com.bkk.sm.common.customer.validators.UserResourceValidator
 import com.bkk.sm.common.model.AreaType
@@ -26,8 +25,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.mock.web.reactive.function.server.MockServerRequest
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.validation.BeanPropertyBindingResult
-import org.springframework.validation.Errors
 import reactor.core.publisher.Mono
 import java.time.Instant
 import java.util.*
@@ -42,8 +39,10 @@ class MongoCompanyHandlerImplTest {
 
     private val companyHandler = MongoCompanyHandlerImpl(
         userResourceValidator = userResourceValidator,
-        userRepository = userRepository, companyResourceValidator = companyResourceValidator,
-        companyRepository = companyRepository, passwordEncoder = passwordEncoder
+        userRepository = userRepository,
+        companyResourceValidator = companyResourceValidator,
+        companyRepository = companyRepository,
+        passwordEncoder = passwordEncoder,
     )
 
     private val bkk = TestUtils.createCompany(
@@ -161,7 +160,7 @@ class MongoCompanyHandlerImplTest {
         coVerify { companyResourceValidator.validate(any(), any()) }
         coVerify { userResourceValidator.validate(any(), any()) }
     }
-    
+
     @Test
     fun `Registering company with existing user`(): Unit = runBlocking {
         // given

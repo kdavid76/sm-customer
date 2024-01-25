@@ -144,5 +144,4 @@ class MongoUserHandlerImplTest {
         coVerify { userRepository.findByUsername(davidk.username) }
         coVerify { userRepository.save(any()) }
     }
-
 }

@@ -82,7 +82,7 @@ class MongoCompanyHandlerImpl(
         val companycode = request.pathVariable("companycode")
         val token = request.pathVariable("activationcode")
 
-        val company = companyRepository.findCompanyByCodeAndActivationTokenAfter(companycode, token)
+        val company = companyRepository.findCompanyByCodeAndActivationKey(companycode, token)
 
         return if (company != null) {
             activateCompany(company)

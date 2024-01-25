@@ -1,7 +1,7 @@
 package com.bkk.sm.customers.config
 
-import com.bkk.sm.customers.handlers.impl.MongoCompanyHandlerImpl
-import com.bkk.sm.customers.handlers.impl.MongoUserHandlerImpl
+import com.bkk.sm.customers.handlers.CompanyHandler
+import com.bkk.sm.customers.handlers.UserHandler
 import mu.KotlinLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,7 +14,7 @@ class RouterConfig {
     private val log = KotlinLogging.logger {}
 
     @Bean
-    fun userRoutes(mongoUserHandlerImpl: MongoUserHandlerImpl) = coRouter {
+    fun userRoutes(mongoUserHandlerImpl: UserHandler) = coRouter {
         before {
             log.info { "Processing User request from ${it.remoteAddress().orElse(null)} with headers=${it.headers()}" }
             it
@@ -38,7 +38,7 @@ class RouterConfig {
     }
 
     @Bean
-    fun companyRoutes(mongoCompanyHandlerImpl: MongoCompanyHandlerImpl) = coRouter {
+    fun companyRoutes(mongoCompanyHandlerImpl: CompanyHandler) = coRouter {
         before {
             log.info {
                 "Processing Company request from ${

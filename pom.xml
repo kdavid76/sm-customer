@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.sportmanagement.bkk</groupId>
         <artifactId>sm-parent</artifactId>
-        <version>0.1.0</version>
+        <version>0.1.4-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -22,8 +22,7 @@
     </modules>
 
     <properties>
-        <sm-commons.version>0.1.0</sm-commons.version>
-        <sm-commons-model.version>0.1.4-SNAPSHOT</sm-commons-model.version>
+        <sm-commons.version>0.1.2-SNAPSHOT</sm-commons.version>
         <development.connection.url>scm:git:git@github.com:kdavid76/sm-customer.git</development.connection.url>
         <image.path>davidkrisztian76/sm-customer</image.path>
     </properties>
@@ -33,7 +32,7 @@
             <dependency>
                 <groupId>com.sportmanagement.bkk</groupId>
                 <artifactId>sm-common-models</artifactId>
-                <version>${sm-commons-model.version}</version>
+                <version>${sm-commons.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.yaml</groupId>
@@ -54,11 +53,23 @@
                 </exclusions>
             </dependency>
 
+            <dependency>
+                <groupId>com.sportmanagement.bkk</groupId>
+                <artifactId>sm-common-kafka</artifactId>
+                <version>${sm-commons.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.yaml</groupId>
+                        <artifactId>snakeyaml</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <!-- TEST -->
             <dependency>
                 <groupId>com.sportmanagement.bkk</groupId>
                 <artifactId>sm-common-models</artifactId>
-                <version>${sm-commons-model.version}</version>
+                <version>${sm-commons.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
