@@ -1,0 +1,12 @@
+{{- if .Values.env.configMap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{.Values.env.configMap.name}}
+  namespace: {{ .Values.deployments.namespace | default .Release.Namespace }}
+data:
+  MONGO_URL: {{.Values.env.configMap.mongoUrl }}
+  CUSTOMER_SUPER_USER_FIRSTNAME: {{.Values.env.configMap.superUserFirstName}}
+  CUSTOMER_SUPER_USER_LASTNAME: {{.Values.env.configMap.superUserLastName}}
+  CUSTOMER_SUPER_USER_EMAIL: {{.Values.env.configMap.superUserEmail}}
+{{- end }}

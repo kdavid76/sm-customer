@@ -11,6 +11,9 @@ pipeline {
     environment {
         GITHUB_PATH = "https://${env.GITHUB_APIKEY}@github.com/kdavid76/sm-customer.git"
         DEVELOPMENT_CONN_URL = "scm:git:https://${env.GITHUB_APIKEY}@github.com/kdavid76/sm-customer.git"
+        DOCKER_IMAGE_NAME = "davidkrisztian76/sm-customer"
+        DOCKER_IMAGE = ""
+
     }
     tools {
         jdk 'oracle-jdk-17'
@@ -45,7 +48,7 @@ pipeline {
         }
         stage('Deploy release') {
             parallel {
-                stage('Push to GitHub') {
+                stage('Push Tag to GitHub') {
                     steps {
                         sh('git add .')
                         sh("git commit -m '[skip ci] SM-CUSTOMER: Release ${NEXT_RELEASE}'")
@@ -53,22 +56,20 @@ pipeline {
                         sh('git push --follow-tags')
                     }
                 }
-                stage('Push to artifactory') {
+                stage('Push to Artifactory') {
                     steps {
                         sh ('mvn deploy')
                     }
                 }
-            }
-        }
-        stage('Push to dockerhub') {
-            steps {
-                dir('sm-customer-services') {
-                    withCredentials([usernamePassword(credentialsId: 'DockerHub_Credentials', passwordVariable: 'DOCKER_REGISTRY_PWD', usernameVariable: 'DOCKER_REGISTRY_USER')]) {
+                stage('Build and push to DockerHub') {
+                    steps {
+                        sh ('cd sm-customer-service')
                         sh ('mvn jib:build')
                     }
                 }
             }
         }
+
         stage('Build next snapshot') {
             steps {
                 script {
@@ -80,15 +81,11 @@ pipeline {
                 sh ('mvn clean package')
             }
         }
-        stage('Deploy snapshot') {
-            parallel {
-                stage('Push snapshot to GitHub') {
-                    steps {
-                        sh('git add .')
-                        sh("git commit -m '[skip ci] SM-CUSTOMER: Next snapshot ${NEXT_SNAPSHOT}'")
-                        sh('git push')
-                    }
-                }
+        stage('Push snapshot to GitHub') {
+            steps {
+                sh('git add .')
+                sh("git commit -m '[skip ci] SM-CUSTOMER: Next snapshot ${NEXT_SNAPSHOT}'")
+                sh('git push')
             }
         }
     }

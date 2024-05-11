@@ -10,25 +10,21 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 @Configuration
 @EnableWebFluxSecurity
 class SecurityConfig {
-
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder(16)
 
     @Bean
     fun configureSecurity(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
-            .csrf().disable()
-            .formLogin().disable()
-            .httpBasic().disable()
-            .authorizeExchange()
-            .pathMatchers("")
-            .permitAll()
-            .pathMatchers("/users/**")
-            .permitAll()
-            .pathMatchers("/companies/**")
-            .permitAll()
-            .anyExchange().authenticated()
-            .and()
+            .csrf { csrf -> csrf.disable() }
+            .formLogin { formLogin -> formLogin.disable() }
+            .httpBasic { httpBasic -> httpBasic.disable() }
+            .authorizeExchange { exchanges ->
+                exchanges.pathMatchers("/users/**").permitAll()
+                    .pathMatchers("/companies/**").permitAll()
+                    .pathMatchers("/actuator/**").permitAll()
+                    .anyExchange().denyAll()
+            }
             .build()
     }
 }

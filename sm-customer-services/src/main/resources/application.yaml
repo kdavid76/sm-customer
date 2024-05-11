@@ -1,6 +1,12 @@
 spring:
   application:
     name: customer-service
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
 server:
   port: 1901
 com:
@@ -9,12 +15,16 @@ com:
       mongo:
         customers:
           database: customers
-          uri: mongodb+srv://${MONGO_CUSTOMER_USER}:${MONGO_CUSTOMER_PASSWORD}@taocluster.qa3sd.mongodb.net/users?retryWrites=true&w=majority
+          uri: mongodb+srv://${MONGO_CUSTOMER_USER}:${MONGO_CUSTOMER_PASSWORD}@${MONGO_URL}
           init:
             enable: true
             superuser:
               username: ${CUSTOMER_SUPER_USER}
               password: ${CUSTOMER_SUPER_USER_PASSWORD}
-              firstname: Mike
-              lastname: Hammer
-              email: mikehammer1902@gmail.com
+              firstname: ${CUSTOMER_SUPER_USER_FIRSTNAME}
+              lastname: ${CUSTOMER_SUPER_USER_LASTNAME}
+              email: ${CUSTOMER_SUPER_USER_EMAIL}
+management:
+  health:
+    probes:
+      enabled: true

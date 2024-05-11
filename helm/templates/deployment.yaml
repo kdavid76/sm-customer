@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm.fullname" . }}
+  namespace:  {{ .Values.deployments.namespace | default .Release.Namespace }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.service.selector | default .Release.Name}}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ .Values.service.selector }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "helm.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: {{ .Values.deployments.portName }}
+              containerPort: {{ .Values.deployments.containerPort }}
+              protocol: {{ .Values.deployments.protocol }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.deployments.livenessProbe.httpGet.path | default "/"}}
+              port: {{ .Values.deployments.livenessProbe.httpGet.port | default 8080}}
+            {{- with .Values.deployments.livenessProbe.schedule }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.deployments.readinessProbe.httpGet.path | default "/"}}
+              port: {{ .Values.deployments.readinessProbe.httpGet.port | default 8080}}
+            {{- with .Values.deployments.readinessProbe.schedule }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          env:
+            - name: MONGO_CUSTOMER_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{.Values.env.userSecret.name}}
+                  key: {{.Values.env.userSecret.mongoUserNameKey}}
+            - name: MONGO_CUSTOMER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{.Values.env.userSecret.name}}
+                  key: {{.Values.env.userSecret.mongoPasswordKey}}
+            - name: CUSTOMER_SUPER_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{.Values.env.userSecret.name}}
+                  key: {{.Values.env.userSecret.superUserNameKey}}
+            - name: CUSTOMER_SUPER_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{.Values.env.userSecret.name}}
+                  key: {{.Values.env.userSecret.superPasswordKey}}
+          envFrom:
+            - configMapRef:
+                name: {{.Values.env.configMap.name}}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

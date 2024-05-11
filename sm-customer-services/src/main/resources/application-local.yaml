@@ -1,0 +1,19 @@
+server:
+  port: 1901
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+com:
+  bkk:
+    sm:
+      mongo:
+        customers:
+          uri: mongodb+srv://taoElszamolas:OzapDuyqF1GSFZPg@taocluster.qa3sd.mongodb.net/users?retryWrites=true&w=majority
+          init:
+            superuser:
+              username: davidk
+              password: Songoku_1
+              firstname: Mike
+              lastname: Hammer
+              email: mikehammer1902@gmail.com

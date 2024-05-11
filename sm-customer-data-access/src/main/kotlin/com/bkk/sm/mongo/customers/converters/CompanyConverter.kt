@@ -10,7 +10,7 @@ class CompanyConverter {
             id = company.id, code = company.code,
             name = company.name, email = company.email, address = company.address, taxId = company.taxId,
             bankAccountNumber = company.bankAccountNumber, optionalContactInfo = company.optionalContactInfo,
-            activationToken = company.activationToken, activationTime = company.activationTime,
+            activationKey = company.activationKey, activationTime = company.activationTime,
             registrationTime = company.registrationTime, lastModificationTime = company.lastModificationTime,
             enabled = company.enabled, version = company.version,
         )
@@ -19,7 +19,7 @@ class CompanyConverter {
             id = company.id, code = company.code,
             name = company.name, email = company.email, address = company.address, taxId = company.taxId,
             bankAccountNumber = company.bankAccountNumber, optionalContactInfo = company.optionalContactInfo,
-            activationToken = company.activationToken, activationTime = company.activationTime,
+            activationKey = company.activationKey, activationTime = company.activationTime,
             registrationTime = company.registrationTime, lastModificationTime = company.lastModificationTime,
             enabled = company.enabled, version = company.version,
         )

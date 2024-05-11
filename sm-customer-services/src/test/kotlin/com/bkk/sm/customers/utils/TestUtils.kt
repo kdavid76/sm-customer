@@ -11,7 +11,7 @@ import org.springframework.mock.web.server.MockServerWebExchange
 import org.springframework.web.reactive.function.server.HandlerStrategies
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.result.view.ViewResolver
-import java.time.LocalDateTime
+import java.util.*
 
 class TestUtils {
 
@@ -58,15 +58,15 @@ class TestUtils {
             taxId: String?,
             bankAccountNumber: String?,
             activationToken: String?,
-            activationTime: LocalDateTime?,
-            registrationTime: LocalDateTime?,
-            lastModificationTime: LocalDateTime?,
+            activationTime: Date?,
+            registrationTime: Date?,
+            lastModificationTime: Date?,
             enabled: Boolean?,
             version: Long,
             address: Address,
         ) = Company(
             id = id, code = code, name = name, email = email, taxId = taxId,
-            bankAccountNumber = bankAccountNumber, activationToken = activationToken,
+            bankAccountNumber = bankAccountNumber, activationKey = activationToken,
             activationTime = activationTime, registrationTime = registrationTime,
             lastModificationTime = lastModificationTime, enabled = enabled,
             version = version, address = address,

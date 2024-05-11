@@ -1,0 +1,127 @@
+# Default values for helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: davidkrisztian76/sm-customer
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: "sm-customer"
+fullnameOverride: "sm-customer"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "customer-admin"
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 1000
+  runAsUser: 1000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 1901
+  name: sm-customer-service
+  targetPort: 1901
+  protocol: "tcp"
+  selector: "sm-customer-server"
+
+deployments:
+  containerPort: 1901
+  portName: "http"
+  protocol: "tcp"
+  namespace: "sm-customer"
+  livenessProbe:
+    httpGet:
+      path: "/actuator/health/liveness"
+      port: 1901
+    schedule:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 5
+  readinessProbe:
+    httpGet:
+      path: "/actuator/health/readiness"
+      port: 1901
+    schedule:
+      initialDelaySeconds: 90
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 5
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: apps.besztercekk.hu
+      paths:
+        - path: "/users"
+          pathType: Prefix
+        - path: "/companies"
+          pathType: Prefix
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env:
+  userSecret:
+    name: user-secrets
+    mongoUserNameKey: mongo-user
+    mongoPasswordKey: mongo-password
+    superUserNameKey: super-user
+    superPasswordKey: super-password
+  configMap:
+    enabled: true
+    name: environment-config
+    mongoUrl: taocluster.qa3sd.mongodb.net/users?retryWrites=true&w=majority
+    superUserEmail: mikehammer1902@gmail.com
+    superUserFirstName: Mike
+    superUserLastName: Hammer
+

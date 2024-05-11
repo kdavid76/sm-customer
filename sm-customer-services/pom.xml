@@ -25,6 +25,11 @@
             <artifactId>sm-common-models</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.sportmanagement.bkk</groupId>
+            <artifactId>sm-common-kafka</artifactId>
+        </dependency>
+
         <!-- SPRING -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -49,6 +54,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <!-- KOTLIN -->
@@ -78,11 +88,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-coroutines-reactor</artifactId>
         </dependency>
@@ -90,6 +95,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!-- KAFKA -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
         </dependency>
 
         <!-- TEST -->
@@ -142,6 +153,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -183,22 +199,17 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>${maven.jib.version}</version>
                 <configuration>
-                    <to>
-                        <image>docker.io/${image.path}</image>
-                        <tags>latest,${project.version}</tags>
-                        <auth>
-                            <username>${DOCKER_REGISTRY_USER}</username>
-                            <password>${DOCKER_REGISTRY_PWD}</password>
-                        </auth>
-                    </to>
                     <from>
                         <image>${maven.jib.image}</image>
                     </from>
-                    <container>
-                        <mainClass>com.bkk.sm.customers.CustomerServiceApplication</mainClass>
-                    </container>
+                    <to>
+                        <image>${image.path}:latest</image>
+                        <tags>
+                            <tag>latest</tag>
+                            <tag>${project.version}</tag>
+                        </tags>
+                    </to>
                 </configuration>
             </plugin>
         </plugins>
