@@ -63,10 +63,11 @@ pipeline {
                 }
                 stage('Build and push to DockerHub') {
                     steps {
-                        sh ('pwd')
-                        sh ('ls -la')
-                        sh ('cd sm-customer-services')
-                        sh ('mvn jib:build')
+                        sh '''
+                            pwd
+                            cd sm-customer-services
+                            mvn jib:build
+                        '''
                     }
                 }
             }
