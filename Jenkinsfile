@@ -46,20 +46,25 @@ pipeline  {
             }
         }
 
-        stage('Static style check') {
-            steps {
-                sh '''
-                    mvn ktlint:check
-                '''
+        stage('Checks') {
+            parallel {
+                stage('Static style check') {
+                    steps {
+                        sh '''
+                            mvn ktlint:check
+                        '''
+                    }
+                }
+
+                stage('Test') {
+                    steps {
+                        sh '''
+                            mvn test
+                        '''
+                    }
+                }
             }
         }
 
-        stage('Test') {
-            steps {
-                sh '''
-                    mvn test
-                '''
-            }
-        }
     }
 }
