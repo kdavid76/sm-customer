@@ -10,13 +10,11 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 @Configuration
 @EnableWebFluxSecurity
 class SecurityConfig {
-
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder(16)
 
     @Bean
     fun configureSecurity(http: ServerHttpSecurity): SecurityWebFilterChain {
-
         return http
             .csrf { csrf -> csrf.disable() }
             .formLogin { formLogin -> formLogin.disable() }
