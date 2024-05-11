@@ -65,6 +65,8 @@ pipeline {
                     steps {
                         sh ('pwd')
                         sh ('ls -la')
+                        sh ('cd sm-customer-services')
+                        sh ('mvn jib:build')
                     }
                 }
             }
