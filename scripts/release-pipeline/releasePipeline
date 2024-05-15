@@ -43,7 +43,7 @@ pipeline {
                 echo "CALCULATED NEXT RELEASE: ${NEXT_RELEASE}"
                 changePomVersion("${NEXT_RELEASE}")
 
-                sh ('mvn clean package')
+                sh ('mvn clean package -X')
             }
         }
         stage('Deploy release') {
