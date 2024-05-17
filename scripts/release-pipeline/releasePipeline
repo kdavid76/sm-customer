@@ -63,11 +63,13 @@ pipeline {
                 }
                 stage('Build and push to DockerHub') {
                     steps {
-                        sh '''
-                            pwd
-                            cd sm-customer-services
-                            mvn jib:build
-                        '''
+                        withCredentials([usernamePassword(credentialsId: 'DockerHub_Credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            sh '''
+                                pwd
+                                cd sm-customer-services
+                                mvn jib:build -DUSERNAME_DOCKER=$USERNAME -DPASSWORD_DOCKER=$PASSWORD
+                            '''
+                        }
                     }
                 }
             }
