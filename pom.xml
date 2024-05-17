@@ -25,6 +25,8 @@
         <sm-commons.version>0.1.2</sm-commons.version>
         <development.connection.url>scm:git:git@github.com:kdavid76/sm-customer.git</development.connection.url>
         <image.path>davidkrisztian76/sm-customer</image.path>
+        <docker.repo.username>${USERNAME_DOCKER}</docker.repo.username>
+        <docker.repo.password>${PASSWORD_DOCKER}</docker.repo.password>
     </properties>
 
     <dependencyManagement>
