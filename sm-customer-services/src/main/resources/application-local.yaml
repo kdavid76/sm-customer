@@ -4,16 +4,3 @@ server:
 #  kafka:
 #    producer:
 #      bootstrap-servers: localhost:9092
-com:
-  bkk:
-    sm:
-      mongo:
-        customers:
-          uri: mongodb+srv://taoElszamolas:HRbCmjwz249WorQy@taocluster.qa3sd.mongodb.net/?retryWrites=true&w=majority&appName=TaoCluster
-          init:
-            superuser:
-              username: davidk
-              password: Songoku_1
-              firstname: Mike
-              lastname: Hammer
-              email: mikehammer1902@gmail.com
