@@ -35,13 +35,13 @@ jobs:
         shell: bash
         working-directory: src
         run: |
-          helm repo index ./helm --merge ../dest/index.yaml --url https://raw.githubusercontent.com/kdavid76/sm-customer/gh-pages/charts/
-          mkdir -p ../dest/helm
+          helm repo index ./charts --merge ../dest/index.yaml --url https://raw.githubusercontent.com/kdavid76/sm-customer/gh-pages/charts/
+          mkdir -p ../dest/charts
           echo "Copying files..."
           shopt -s extglob
-          mkdir -p ./helm/
-          echo "n" | cp -pr ./temp/!(index.yaml) ../dest/helm/
-          echo "n" | cp -pr ./temp/!(index.yaml) ./helm/
+          mkdir -p ./charts/
+          echo "n" | cp -pr ./temp/!(index.yaml) ../dest/charts/
+          echo "n" | cp -pr ./temp/!(index.yaml) ./charts/
           echo "n" | cp -pr ./temp/index.yaml ../dest/
           echo "y" | rm -rf ./temp/*
           git config user.name "helm"
