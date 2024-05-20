@@ -40,12 +40,10 @@ jobs:
           echo "Copying files..."
           shopt -s extglob
           mkdir -p ./charts/
-          echo "n" | cp -pr ./temp/!(index.yaml) ../dest/charts/
-          echo "n" | cp -pr ./temp/!(index.yaml) ./charts/
-          echo "n" | cp -pr ./temp/index.yaml ../dest/
-          echo "y" | rm -rf ./temp/*
+          echo "n" | cp -pr ./charts/!(index.yaml) ../dest/charts/
+          echo "n" | cp -pr ./charts/index.yaml ../dest/
           git config user.name "helm"
-          git config user.email "your-email@example.com"
+          git config user.email "mikehammer1902@gmail.com"
           git add .
           git commit -m "Updated from ref: $GITHUB_SHA"
           git push
