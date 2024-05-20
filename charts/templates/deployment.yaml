@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "helm.fullname" . }}
-  namespace:  {{ .Values.deployments.namespace | default .Release.Namespace }}
+  namespace: {{ .Values.deployments.namespace | default .Release.Namespace }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}

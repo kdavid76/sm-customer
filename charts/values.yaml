@@ -120,7 +120,7 @@ env:
   configMap:
     enabled: true
     name: environment-config
-    mongoUrl: taocluster.qa3sd.mongodb.net/users?retryWrites=true&w=majority
+    mongoUrl: taocluster.qa3sd.mongodb.net/users?retryWrites=true&w=majority&appName=TaoCl
     superUserEmail: mikehammer1902@gmail.com
     superUserFirstName: Mike
     superUserLastName: Hammer
