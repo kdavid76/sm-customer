@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.deployments.namespace }}
+  labels:
+    name: {{ .Values.deployments.namespace }}

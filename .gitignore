@@ -35,3 +35,5 @@ bin/
 # Project exclude paths
 /data-access/target/
 /service/target/
+
+helm/*.tgz

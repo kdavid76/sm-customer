@@ -1,15 +1,15 @@
 server:
   port: 1901
-spring:
-  kafka:
-    producer:
-      bootstrap-servers: localhost:9092
+#spring:
+#  kafka:
+#    producer:
+#      bootstrap-servers: localhost:9092
 com:
   bkk:
     sm:
       mongo:
         customers:
-          uri: mongodb+srv://taoElszamolas:OzapDuyqF1GSFZPg@taocluster.qa3sd.mongodb.net/users?retryWrites=true&w=majority
+          uri: mongodb+srv://taoElszamolas:HRbCmjwz249WorQy@taocluster.qa3sd.mongodb.net/?retryWrites=true&w=majority&appName=TaoCluster
           init:
             superuser:
               username: davidk
