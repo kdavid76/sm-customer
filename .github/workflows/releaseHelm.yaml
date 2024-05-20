@@ -1,0 +1,62 @@
+name: Release Helm Charts
+
+concurrency: release-helm
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'temp/**'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: 'src'
+          ref: 'master'
+          fetch-depth: 0
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: 'dest'
+          ref: 'gh-pages'
+          fetch-depth: 0
+
+      - name: Install Helm
+        uses: azure/setup-helm@v1
+
+      - name: Update New Files and push to master branch
+        shell: bash
+        working-directory: src
+        run: |
+          helm repo index ./temp --merge ../dest/index.yaml --url https://raw.githubusercontent.com/kdavid76/sm-customer/gh-pages/helm/
+          mkdir -p ../dest/helm
+          echo "Copying files..."
+          shopt -s extglob
+          mkdir -p ./helm/
+          echo "n" | cp -pr ./temp/!(index.yaml) ../dest/helm/
+          echo "n" | cp -pr ./temp/!(index.yaml) ./helm/
+          echo "n" | cp -pr ./temp/index.yaml ../dest/
+          echo "y" | rm -rf ./temp/*
+          git config user.name "helm"
+          git config user.email "your-email@example.com"
+          git add .
+          git commit -m "Updated from ref: $GITHUB_SHA"
+          git push
+
+      - name: Push New Files
+        shell: bash
+        working-directory: dest
+        run: |
+          git config user.name "helm"
+          git config user.email "mikehammer1902@gmail.com"
+          git add $(git ls-files -o --exclude-standard)
+          git add index.yaml
+          git commit -m "Updated from ref: $GITHUB_SHA"
+          git push
