@@ -41,7 +41,7 @@ service:
   port: 8080
   name: sm-customer-service
   targetPort: 8080
-  protocol: "tcp"
+  protocol: "TCP"
   selector: "sm-customer-server"
   portName: web
 
