@@ -46,13 +46,13 @@ spec:
   rules:
     - http:
         paths:
-        {{- range .Values.ingress.paths }}
+    {{- range .Values.ingress.paths }}
           - path: {{ .path }}
             pathType: {{ .pathType }}
             backend:
               service:
                 name: {{ $serviceName }}
                 port:
-                  - name: {{ $svcPortName }}
-        {{- end}}
+                  name: {{ $svcPortName }}
+      {{- end}}
 {{- end }}
