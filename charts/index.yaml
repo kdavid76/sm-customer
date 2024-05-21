@@ -3,7 +3,17 @@ entries:
   sm-customer:
   - apiVersion: v2
     appVersion: 0.1.3
-    created: "2024-05-21T21:16:41.776258465Z"
+    created: "2024-05-21T21:22:57.790556681Z"
+    description: A Helm chart for Sports Management Customer microservice
+    digest: d8daed0238fb064e8eefd2eaed1c69bba19140a7fc8333eadb824202f79669d0
+    name: sm-customer
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/kdavid76/sm-customer/gh-pages/charts/sm-customer-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 0.1.3
+    created: "2024-05-21T21:22:57.788485193Z"
     description: A Helm chart for Sports Management Customer microservice
     digest: d19adfd3d1ee885a985d5db2df0a685ac8b4df50861dfc277a3b08b3ec51e4b3
     name: sm-customer
@@ -11,34 +21,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/kdavid76/sm-customer/gh-pages/charts/sm-customer-0.1.3.tgz
     version: 0.1.3
-  - apiVersion: v2
-    appVersion: 0.1.3
-    created: "2024-05-21T07:17:17.256646618Z"
-    description: A Helm chart for Sports Management Customer microservice
-    digest: 0a6831199c55ad7254eff0257723e53461c02e782ff5f0bd65d990d07bf453e6
-    name: sm-customer
-    type: application
-    urls:
-    - https://raw.githubusercontent.com/kdavid76/sm-customer/gh-pages/charts/sm-customer-0.1.2.tgz
-    version: 0.1.2
-  - apiVersion: v2
-    appVersion: 0.1.3
-    created: "2024-05-21T07:17:17.255562893Z"
-    description: A Helm chart for Sports Management Customer microservice
-    digest: de3817f5959fb2dd1a3e27b53a2a172d73a4349dda0e44be47f361d6c9103943
-    name: sm-customer
-    type: application
-    urls:
-    - https://raw.githubusercontent.com/kdavid76/sm-customer/gh-pages/charts/sm-customer-0.1.1.tgz
-    version: 0.1.1
-  - apiVersion: v2
-    appVersion: 0.1.3
-    created: "2024-05-21T07:17:17.254218773Z"
-    description: A Helm chart for Sports Management Customer microservice
-    digest: dd8f01136b1ea5d5fa8c179a2137e6af7b70eb0b4f79daf0c82929f2f72e4f44
-    name: sm-customer
-    type: application
-    urls:
-    - https://raw.githubusercontent.com/kdavid76/sm-customer/gh-pages/charts/sm-customer-0.1.0.tgz
-    version: 0.1.0
-generated: "2024-05-21T21:16:41.774010511Z"
+generated: "2024-05-21T21:22:57.787214547Z"
