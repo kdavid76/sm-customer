@@ -48,7 +48,7 @@ service:
 deployments:
   containerPort: 8080
   portName: "http"
-  protocol: "tcp"
+  protocol: "TCP"
   namespace: "sm-customer"
   livenessProbe:
     httpGet:
