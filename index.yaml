@@ -3,7 +3,17 @@ entries:
   sm-customer:
   - apiVersion: v2
     appVersion: 0.1.4
-    created: "2024-05-24T22:47:23.999168985Z"
+    created: "2024-05-24T23:16:38.673844118Z"
+    description: A Helm chart for Sports Management Customer microservice
+    digest: 8d8f05d66b52a7db4765b4eee807e02d9aaee1d5cc1d970cae8cb0f26ca72361
+    name: sm-customer
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/kdavid76/sm-customer/gh-pages/charts/sm-customer-0.1.11.tgz
+    version: 0.1.11
+  - apiVersion: v2
+    appVersion: 0.1.4
+    created: "2024-05-24T23:16:38.673028872Z"
     description: A Helm chart for Sports Management Customer microservice
     digest: b5a0d7b5a79796a6011d7080fa6e21b1b2fba3299d34efc72c14ffb1f29ca235
     name: sm-customer
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/kdavid76/sm-customer/gh-pages/charts/sm-customer-0.1.10.tgz
     version: 0.1.10
-generated: "2024-05-24T22:47:23.998401485Z"
+generated: "2024-05-24T23:16:38.671522914Z"
