@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>sm-customer-parent</artifactId>
-    <version>0.1.7</version>
+    <version>0.1.7-SNAPSHOT</version>
     <name>sm-customer-parent</name>
     <description>Demo project for Spring Boot</description>
 
