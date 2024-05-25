@@ -7,7 +7,7 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.targetPort | default 8080 }}
+      targetPort: {{ .Values.service.targetPortName | default 8080 }}
       protocol: {{ .Values.service.protocol | default "TCP"}}
       name: {{ .Values.service.portName }}
   selector:

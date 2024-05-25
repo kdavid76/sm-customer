@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: davidkrisztian76/sm-customer
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "0.1.5"
 
 imagePullSecrets: [ ]
 nameOverride: "sm-customer"
@@ -41,13 +41,14 @@ service:
   port: 8080
   name: sm-customer-service
   targetPort: 8080
+  targetPortName: "web"
   protocol: "TCP"
   selector: "sm-customer-server"
-  portName: web
+  portName: "web"
 
 deployments:
   containerPort: 8080
-  portName: "http"
+  portName: "web"
   protocol: "TCP"
   namespace: "sm-customer"
   livenessProbe:
