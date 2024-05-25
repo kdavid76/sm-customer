@@ -25,11 +25,12 @@
             <artifactId>sm-common-models</artifactId>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>com.sportmanagement.bkk</groupId>
             <artifactId>sm-common-kafka</artifactId>
         </dependency>
-
+        -->
         <!-- SPRING -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -98,11 +99,12 @@
         </dependency>
 
         <!-- KAFKA -->
+        <!--
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
         </dependency>
-
+        -->
         <!-- TEST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
