@@ -54,7 +54,7 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-
+            <!--
             <dependency>
                 <groupId>com.sportmanagement.bkk</groupId>
                 <artifactId>sm-common-kafka</artifactId>
@@ -66,7 +66,7 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-
+            -->
             <!-- TEST -->
             <dependency>
                 <groupId>com.sportmanagement.bkk</groupId>
